@@ -1,9 +1,8 @@
-require("dotenv/config");
 
 import Cliente from "../models/Cliente";
 import Endereco from "../models/Endereco";
 
-import FormaterCPF from "../../utils/FormarterCPF";
+import FormaterString from "../../utils/FormarterString";
 
 class ClienteController {
   async index(req, res) {
@@ -45,7 +44,7 @@ class ClienteController {
       });
     }
 
-    const cpfFormated = FormaterCPF(cpf);
+    const cpfFormated = FormaterString(cpf);
 
     const checkCPF = await Cliente.findOne({
       where: { cpf: cpfFormated },
@@ -87,7 +86,7 @@ class ClienteController {
   }
 
   async destroy(req, res) {
-    const cpf = FormaterCPF(req.params.cpf);
+    const cpf = FormaterString(req.params.cpf);
 
     const cliente = await Cliente.findOne({
       where: { cpf: cpf },

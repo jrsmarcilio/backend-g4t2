@@ -1,5 +1,3 @@
-require("dotenv/config");
-
 import Usuario from "../models/Usuario";
 
 class UsuarioController {

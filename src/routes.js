@@ -27,4 +27,6 @@ routes.get("/endereco/json/:cep", EnderecoController.index);
 routes.put("/endereco/json/:id", EnderecoController.update);
 routes.delete("/endereco/json/:id", EnderecoController.destroy);
 
+// Rotas do Especialista
+
 export default routes;
