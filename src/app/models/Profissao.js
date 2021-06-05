@@ -12,10 +12,7 @@ class Profissao extends Model {
         );
 
         return this;
-    }
-
-    static associate(models) {
-        this.belongsTo(models.Especialista, { foreignKey: "especialista_id" });
+   
     }
 }
 
