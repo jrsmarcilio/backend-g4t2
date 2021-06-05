@@ -1,7 +1,6 @@
 require("dotenv/config");
 
 import Cliente from "../models/Cliente";
-import Endereco from "../models/Endereco";
 
 import FormaterString from "../../utils/FormarterString";
 
