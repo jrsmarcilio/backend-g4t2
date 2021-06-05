@@ -10,6 +10,8 @@ class Endereco extends Model {
         bairro: Sequelize.STRING,
         cidade: Sequelize.STRING,
         estado: Sequelize.STRING,
+        cliente_id: Sequelize.INTEGER,
+        especialista_id: Sequelize.INTEGER,
       },
       {
         sequelize,
@@ -18,7 +20,6 @@ class Endereco extends Model {
 
     return this;
   }
-  
 }
 
 export default Endereco;

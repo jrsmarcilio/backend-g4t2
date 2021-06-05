@@ -1,28 +1,15 @@
 import Sequelize, { Model } from "sequelize";
 
-class Cliente extends Model {
+class Especialista extends Model {
   static init(sequelize) {
     super.init(
       {
-        id: {
-         type: Sequelize.INTEGER,
-          defaultValue
-        } ,
         nome: Sequelize.STRING,
-        cpf: Sequelize.STRING,
+        registro: Sequelize.STRING,
         telefone: Sequelize.STRING,
         celular: Sequelize.STRING,
         email: Sequelize.STRING,
-        tipo_sanguineo: Sequelize.DataTypes.ENUM(
-          "A+",
-          "A-",
-          "B+",
-          "B-",
-          "O+",
-          "O-",
-          "AB+",
-          "AB-"
-        ),
+        profissao_id: Sequelize.INTEGER,
       },
       {
         sequelize,
@@ -35,6 +22,9 @@ class Cliente extends Model {
   static associate(models) {
     this.belongsTo(models.Endereco, { foreignKey: "id" });
   }
+  static associate(models) {
+    this.belongsTo(models.Profissao, { foreignKey: "id" });
+  }
 }
 
-export default Cliente;
+export default Especialista;

@@ -10,7 +10,7 @@ module.exports = {
         primaryKey: true,
       },
       cliente_id: {
-        type: Sequelize.INTEGER,
+       type: Sequelize.INTEGER,
         references: {
           model: "clientes",
           key: "id",
