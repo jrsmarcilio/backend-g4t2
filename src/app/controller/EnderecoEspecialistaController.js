@@ -1,9 +1,9 @@
 import Endereco from "../models/Endereco";
-import Cliente from "../models/Cliente";
+import Especialista from "../models/Especialista";
 
 import { getAddress } from "address-br";
 
-class EnderecoController {
+class EnderecoEspecialistaController {
   async index(req, res) {
     //  GET - ENDEREÇO EM JSON
     try {
@@ -43,8 +43,8 @@ class EnderecoController {
     //  PUT - EDIÇÃO DE ENDEREÇO
     try {
       const address = await getAddress(req.body.cep);
-      const cliente = await Cliente.findByPk(req.params.id);
-      const endereco = await Endereco.findByPk(cliente.endereco_id);
+      const especialista = await Especialista.findByPk(req.params.id);
+      const endereco = await Endereco.findByPk(especialista.endereco_id);
 
       await endereco.update({
         cep: address.cep,
@@ -61,9 +61,9 @@ class EnderecoController {
 
   async destroy(req, res) {
     try {
-      const cliente = await Cliente.findByPk(req.params.id);
+      const especialista = await Especialista.findByPk(req.params.id);
       const endereco = await Endereco.destroy({
-        where: { id: cliente.endereco_id },
+        where: { id: especialista.endereco_id },
       });
       if (endereco) {
         return res.status(200).json({ message: "O Endereço foi excluido." });
@@ -74,4 +74,4 @@ class EnderecoController {
   }
 }
 
-export default new EnderecoController();
+export default new EnderecoEspecialistaController();

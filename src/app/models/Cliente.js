@@ -4,10 +4,6 @@ class Cliente extends Model {
   static init(sequelize) {
     super.init(
       {
-        id: {
-         type: Sequelize.INTEGER,
-          defaultValue
-        } ,
         nome: Sequelize.STRING,
         cpf: Sequelize.STRING,
         telefone: Sequelize.STRING,
