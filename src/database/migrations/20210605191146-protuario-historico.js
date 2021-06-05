@@ -2,31 +2,25 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("atendimentos", {
+    return queryInterface.createTable("prontuario_historico", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      data_agendamento: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      data_atendimento: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      hora_atendimento: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      valor: {
+      prontuario_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        references: {
+          model: "prontuarios",
+          key: "id",
+          onUpdate: "CASCADE",
+          onDelete: "SET NULL",
+          allowNull: false,
+        },
       },
       especialista_id: {
-        type: Sequelize.INTEGER,
+       type: Sequelize.INTEGER,
         references: {
           model: "especialistas",
           key: "id",
@@ -35,9 +29,16 @@ module.exports = {
           allowNull: false,
         },
       },
-      atendimento_status: {
-        type: Sequelize.ENUM,
-        values: ["AGENDADO", "REALIZADO", "CANCELADO"],
+      data: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      hora: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      descricao: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       created_at: {
@@ -52,6 +53,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable("atendimentos");
+    return queryInterface.dropTable("prontuario_historico");
   },
 };

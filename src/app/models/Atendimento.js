@@ -1,32 +1,31 @@
 import Sequelize, { Model } from "sequelize";
 
-class Cliente extends Model {
-    static init(sequelize) {
-        super.init(
-            {
-                id: Sequelize.INTEGER,
-                dataAgendamento: Sequelize.DATE,
-                dataAtendimento: Sequelize.DATE,
-                horaAtendimento: Sequelize.DATE,
-                valor: Sequelize.INTEGER,
-                tipo_sanguineo: Sequelize.DataTypes.ENUM(
-                    "AGENDADO",
-                    "REALIZADO",
-                    "CANCELADO"
-                ),
-                atendimento_id: Sequelize.INTEGER,
-            },
-            {
-                sequelize,
-            }
-        );
+class Atendimento extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        data_agendamento: Sequelize.DATE,
+        data_atendimento: Sequelize.DATE,
+        hora_atendimento: Sequelize.DATE,
+        valor: Sequelize.INTEGER,
+        especialista_id: Sequelize.INTEGER,
+        atendimento_status: Sequelize.DataTypes.ENUM(
+          "AGENDADO",
+          "REALIZADO",
+          "CANCELADO"
+        ),
+      },
+      {
+        sequelize,
+      }
+    );
 
-        return this;
-    }
+    return this;
+  }
 
-    static associate(models) {
-        this.belongsTo(models.Atendimento, { foreignKey: "atendimento_id" });
-    }
+  static associate(models) {
+    this.belongsTo(models.Especialista, { foreignKey: "id" });
+  }
 }
 
-export default Cliente;
+export default Atendimento;

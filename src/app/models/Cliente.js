@@ -4,6 +4,10 @@ class Cliente extends Model {
   static init(sequelize) {
     super.init(
       {
+        id: {
+         type: Sequelize.INTEGER,
+          defaultValue
+        } ,
         nome: Sequelize.STRING,
         cpf: Sequelize.STRING,
         telefone: Sequelize.STRING,
@@ -19,7 +23,6 @@ class Cliente extends Model {
           "AB+",
           "AB-"
         ),
-        endereco_id: Sequelize.INTEGER,
       },
       {
         sequelize,
@@ -30,7 +33,7 @@ class Cliente extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Endereco, { foreignKey: "endereco_id" });
+    this.belongsTo(models.Endereco, { foreignKey: "id" });
   }
 }
 

@@ -4,12 +4,11 @@ class Especialista extends Model {
     static init(sequelize) {
         super.init(
             {
-                registro: Sequelize.STRING,
                 nome: Sequelize.STRING,
+                registro: Sequelize.STRING,
                 telefone: Sequelize.STRING,
                 celular: Sequelize.STRING,
                 email: Sequelize.STRING,
-                endereco_id: Sequelize.INTEGER,
                 profissao_id: Sequelize.INTEGER,
             },
             {
@@ -21,8 +20,10 @@ class Especialista extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.Endereco, { foreignKey: "endereco_id" }),
-            this.belongsTo(models.Profissao, { foreignKey: "profissao_id" });
+        this.belongsTo(models.Endereco, { foreignKey: "id" });
+    }
+    static associate(models) {
+        this.belongsTo(models.Profissao, { foreignKey: "id" });
     }
 }
 

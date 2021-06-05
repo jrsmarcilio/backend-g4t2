@@ -1,6 +1,5 @@
 
 import Cliente from "../models/Cliente";
-import Endereco from "../models/Endereco";
 
 import FormaterString from "../../utils/FormarterString";
 
@@ -18,7 +17,7 @@ class ClienteController {
         "createdAt",
         "updatedAt",
       ],
-      include: Endereco,
+      // include: Endereco,
     });
 
     if (clientes.length === 0) {
@@ -68,7 +67,7 @@ class ClienteController {
   }
 
   async update(req, res) {
-    const cpf = req.params.cpf;
+    const cpf = FormaterString(req.params.cpf);
 
     const cliente = await Cliente.findOne({
       where: { cpf: cpf },
