@@ -1,10 +1,10 @@
 # Documentação do Projeto
 
 #### Autores
-- [Marcílio Júnior](https://github.com/gleyson-gama)
-- [Lutchenca Medeiros](https://github.com/?)
+- [Marcílio Júnior](https://github.com/jrsmarcilio)
+- [Lutchenca Medeiros](https://github.com/lutchenca)
 - [Matheus Cardoso](https://github.com/?)
-- [Renan Tokashiki](https://github.com/?)
+- [Renan Tokashiki](https://github.com/renantoka)
 - [Rainerio Lopes](https://github.com/?)
 
 ## Desafio Atendimento Médico \ Prontuário
