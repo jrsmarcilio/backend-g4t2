@@ -41,7 +41,7 @@ module.exports = {
           model: "enderecos",
           key: "id",
           onUpdate: "CASCADE",
-          onUpdate: "SET NULL",
+          onDelete: "SET NULL",
           allowNull: false,
         },
       },

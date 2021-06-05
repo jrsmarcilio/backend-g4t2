@@ -31,7 +31,7 @@ module.exports = {
           model: "especialistas",
           key: "id",
           onUpdate: "CASCADE",
-          onUpdate: "SET NULL",
+          onDelete: "SET NULL",
           allowNull: false,
         },
       },

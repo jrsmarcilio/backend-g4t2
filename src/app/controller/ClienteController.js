@@ -3,6 +3,8 @@ require("dotenv/config");
 import Cliente from "../models/Cliente";
 import Endereco from "../models/Endereco";
 
+import FormaterCPF from "../../utils/FormarterCPF";
+
 class ClienteController {
   async index(req, res) {
     const clientes = await Cliente.findAll({
@@ -43,14 +45,23 @@ class ClienteController {
       });
     }
 
+    const cpfFormated = FormaterCPF(cpf);
+
     const checkCPF = await Cliente.findOne({
-      where: { cpf: cpf },
+      where: { cpf: cpfFormated },
     });
     if (checkCPF) {
       return res.status(401).json({ error: `${cpf} já está cadastrado.` });
     }
 
-    await Cliente.create(req.body);
+    await Cliente.create({
+      cpf: cpfFormated,
+      nome,
+      telefone,
+      celular,
+      email,
+      tipo_sanguineo,
+    });
 
     return res.status(200).json({
       message: `O usuário foi cadastrado com sucesso.`,
@@ -68,10 +79,7 @@ class ClienteController {
       return res.status(401).json({ error: `Os dados não foram encontrados.` });
     }
 
-    await cliente
-      .update(req.body)
-      .then((result) => console.log(result))
-      .catch((err) => console.log(err));
+    await cliente.update(req.body);
 
     return res
       .status(200)
@@ -79,7 +87,7 @@ class ClienteController {
   }
 
   async destroy(req, res) {
-    const cpf = req.body.cpf;
+    const cpf = FormaterCPF(req.params.cpf);
 
     const cliente = await Cliente.findOne({
       where: { cpf: cpf },
