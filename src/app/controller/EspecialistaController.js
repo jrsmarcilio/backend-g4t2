@@ -1,107 +1,109 @@
 import Especialista from "../models/Especialista";
 import Endereco from "../models/Endereco";
 
-import FormaterString from "../../utils/FormarterString";
+import FormaterString from "../../utils/FormaterString";
 
 class EspecialistaController {
-    async index(req, res) {
-        const especialistas = await Especialista.findAll({
-            attributes: [
-                "id",
-                "registro",
-                "nome",
-                "telefone",
-                "celular",
-                "email",
-                "createdAt",
-                "updatedAt",
-            ],
-            include: Endereco,
-        });
+  async index(req, res) {
+    const especialistas = await Especialista.findAll({
+      attributes: [
+        "id",
+        "registro",
+        "nome",
+        "telefone",
+        "celular",
+        "email",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: Endereco,
+    });
 
-        if (especialistas.length === 0) {
-            return res.status(401).json({ error: "Nenhum Especialista foi encontrado." });
-        }
-
-        return res.status(200).json(especialistas);
+    if (especialistas.length === 0) {
+      return res
+        .status(401)
+        .json({ error: "Nenhum Especialista foi encontrado." });
     }
 
-    async store(req, res) {
-        const { registro, nome, telefone, celular, email } = req.body;
+    return res.status(200).json(especialistas);
+  }
 
-        if (
-            registro == null ||
-            nome == null ||
-            telefone == null ||
-            celular == null ||
-            email == null
-        ) {
-            return res.status(400).json({
-                error: "Por gentileza, preencha todos os campos.",
-            });
-        }
+  async store(req, res) {
+    const { registro, nome, telefone, celular, email } = req.body;
 
-        const registerFormated = FormaterString(registro);
-
-        const checkRegister = await Especialista.findOne({
-            where: { registro: registerFormated },
-        });
-        if (checkRegister) {
-            return res.status(401).json({ error: `${registro} já está cadastrado.` });
-        }
-
-        await Especialista.create({
-            registro,
-            nome,
-            telefone,
-            celular,
-            email
-        });
-
-        return res.status(200).json({
-            message: `O especialista foi cadastrado com sucesso.`,
-        });
+    if (
+      registro == null ||
+      nome == null ||
+      telefone == null ||
+      celular == null ||
+      email == null
+    ) {
+      return res.status(400).json({
+        error: "Por gentileza, preencha todos os campos.",
+      });
     }
 
-    async update(req, res) {
-        const registro = req.params.registro;
+    const registerFormated = FormaterString(registro);
 
-        const especialista = await Especialista.findOne({
-            where: { registro: registro },
-        });
+    // const checkRegister = await Especialista.findOne({
+    //   where: { registro: registerFormated },
+    // });
+    // if (checkRegister) {
+    //   return res.status(401).json({ error: `${registro} já está cadastrado.` });
+    // }
 
-        if (!especialista) {
-            return res.status(401).json({ error: `Os dados não foram encontrados.` });
-        }
+    await Especialista.create({
+      registro,
+      nome,
+      telefone,
+      celular,
+      email,
+    });
 
-        await especialista.update(req.body);
+    return res.status(200).json({
+      message: `O especialista foi cadastrado com sucesso.`,
+    });
+  }
 
-        return res
-            .status(200)
-            .json({ message: `Os dados foram atualizado com sucesso.` });
+  async update(req, res) {
+    const registro = req.params.registro;
+
+    const especialista = await Especialista.findOne({
+      where: { registro: registro },
+    });
+
+    if (!especialista) {
+      return res.status(401).json({ error: `Os dados não foram encontrados.` });
     }
 
-    async destroy(req, res) {
-        const registro = FormaterString(req.params.registro);
+    await especialista.update(req.body);
 
-        const especialista = await Especialista.findOne({
-            where: { registro: registro },
-        });
+    return res
+      .status(200)
+      .json({ message: `Os dados foram atualizado com sucesso.` });
+  }
 
-        if (!especialista) {
-            return res.status(401).json({ error: `Os dados não foram encontrados.` });
-        }
+  async destroy(req, res) {
+    const registro = FormaterString(req.params.registro);
 
-        await especialista.destroy({
-            where: {
-                registro: registro,
-            },
-        });
+    const especialista = await Especialista.findOne({
+      where: { registro: registro },
+    });
 
-        return res
-            .status(200)
-            .json({ message: `Os dados foram deletados com sucesso.` });
+    if (!especialista) {
+      return res.status(401).json({ error: `Os dados não foram encontrados.` });
     }
+
+    await especialista.destroy({
+      where: {
+        registro: registro,
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ message: `Os dados foram deletados com sucesso.` });
+  }
 }
 
 export default new EspecialistaController();

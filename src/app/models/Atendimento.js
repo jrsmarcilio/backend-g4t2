@@ -24,6 +24,9 @@ class Atendimento extends Model {
   }
 
   static associate(models) {
+    this.belongsTo(models.Cliente, { foreignKey: "id" });
+  }
+  static associate(models) {
     this.belongsTo(models.Especialista, { foreignKey: "id" });
   }
 }

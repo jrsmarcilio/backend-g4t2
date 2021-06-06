@@ -33,11 +33,11 @@ module.exports = {
       profissao_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: "profissoes",
+          model: "profissaos",
           key: "id",
           onUpdate: "CASCADE",
           onDelete: "SET NULL",
-          allowNull: false,
+          allowNull: true,
         },
       },
       endereco_id: {
@@ -47,7 +47,7 @@ module.exports = {
           key: "id",
           onUpdate: "CASCADE",
           onDelete: "SET NULL",
-          allowNull: false,
+          allowNull: true,
         },
       },
       created_at: {

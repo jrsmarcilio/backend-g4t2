@@ -1,7 +1,6 @@
-
 import Cliente from "../models/Cliente";
 
-import FormaterString from "../../utils/FormarterString";
+import FormaterString from "../../utils/FormaterString";
 
 class ClienteController {
   async index(req, res) {

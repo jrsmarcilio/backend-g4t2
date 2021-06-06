@@ -2,10 +2,13 @@ import Endereco from "../models/Endereco";
 import Cliente from "../models/Cliente";
 
 import { getAddress } from "address-br";
+import Usuario from "../models/Usuario";
 
 class EnderecoController {
   async index(req, res) {
-    //  GET - ENDEREÇO EM JSON
+    return res.status(200).json(await Endereco.findAll());
+  }
+  async show(req, res) {
     try {
       const address = await getAddress(req.params.cep);
       return res.status(200).json(address);
@@ -17,9 +20,15 @@ class EnderecoController {
   }
 
   async store(req, res) {
-    //  POST - CRIAÇÃO DE ENDEREÇO
-    // const id = req.params.id;
-    const { cep, rua: logradouro, numero, bairro, cidade, estado } = req.body;
+    const {
+      id,
+      cep,
+      rua: logradouro,
+      numero,
+      bairro,
+      cidade,
+      estado,
+    } = req.body;
 
     const endereco = await Endereco.create({
       cep: cep,
@@ -30,12 +39,22 @@ class EnderecoController {
       estado: estado,
     });
 
+    if (id) {
+      const usuario = await Usuario.findByPk({
+        where: { id: id },
+      });
+
+      await usuario.update({
+        endereco_id: endereco.id,
+      });
+    }
+
     if (!endereco) {
       return res.status(401).json({ error: `O Endereço não foi cadastrado.` });
     }
 
     return res.status(200).json({
-      message: `O Endereço foi cadastrado com sucesso.`,
+      message: `Endereço cadastrado com sucesso.`,
     });
   }
 

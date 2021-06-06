@@ -1,20 +1,20 @@
 import Usuario from "../models/Usuario";
 
 class UsuarioController {
-  async index(req, res) {
-    if (req.params.id) {
-      const usuario = await Usuario.findOne({
-        where: { id: req.params.id },
-        attributes: ["id", "login", "nome"],
-      });
+  async show(req, res) {
+    const usuario = await Usuario.findOne({
+      where: { id: req.params.id },
+      attributes: ["id", "login", "nome"],
+    });
 
-      if (!usuario) {
-        return res.status(401).json({ error: `Nenhum usuário encontrado.` });
-      }
-
-      return res.status(200).json(usuario);
+    if (!usuario) {
+      return res.status(401).json({ error: `Nenhum usuário encontrado.` });
     }
 
+    return res.status(200).json(usuario);
+  }
+
+  async index(req, res) {
     const usuarios = await Usuario.findAll({
       attributes: ["id", "login", "nome"],
     });

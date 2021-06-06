@@ -11,6 +11,7 @@ module.exports = {
       },
       data_agendamento: {
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
         allowNull: false,
       },
       data_atendimento: {
@@ -25,8 +26,18 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      cliente_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "clientes",
+          key: "id",
+          onUpdate: "CASCADE",
+          onDelete: "SET NULL",
+          allowNull: false,
+        },
+      },
       especialista_id: {
-       type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER,
         references: {
           model: "especialistas",
           key: "id",
@@ -35,8 +46,9 @@ module.exports = {
           allowNull: false,
         },
       },
-      atendimento_status: {
+      status: {
         type: Sequelize.ENUM,
+        defaultValue: "AGENDADO",
         values: ["AGENDADO", "REALIZADO", "CANCELADO"],
         allowNull: false,
       },
