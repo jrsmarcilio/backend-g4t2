@@ -24,8 +24,8 @@ class Usuario extends Model {
     return this;
   }
 
-  static associate(models) {
-    this.belongsTo(models.Endereco, { foreignKey: "id" }); //, as: "endereco"
+  checkSenha(senha) {
+    return bcrypt.compare(senha, this.senha_hash);
   }
 }
 

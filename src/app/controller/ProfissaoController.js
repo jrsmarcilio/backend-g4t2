@@ -2,14 +2,14 @@ import Profissao from "../models/Profissao";
 
 class ProfissaoController {
   async show(req, res) {
-    const nomeProfissao = req.body.profissao;
+    const nomeProfissao = req.params.nome;
 
     const profissao = await Profissao.findAll({
       where: { nome: nomeProfissao.toLowerCase() },
-      attributes: { exclude: ["created_at", "updated_at"] },
+      attributes: { exclude: ["createdAt", "updatedAt"] },
     });
 
-    if (!profissao) {
+    if (profissao.length === 0) {
       return res.status(401).json({ error: `Nenhuma profissão encontrada.` });
     }
 
@@ -18,10 +18,10 @@ class ProfissaoController {
 
   async index(req, res) {
     const profissoes = await Profissao.findAll({
-      attributes: { exclude: ["created_at", "updated_at"] },
+      attributes: { exclude: ["createdAt", "updatedAt"] },
     });
 
-    if (!profissoes) {
+    if (profissoes.length === 0) {
       return res.status(401).json({ error: `Nenhuma profissão encontrada.` });
     }
 
@@ -29,16 +29,16 @@ class ProfissaoController {
   }
 
   async store(req, res) {
+    const nome = req.body.nome;
+
     const checkProfissao = await Profissao.findOne({
-      where: { nome: req.body.nome },
+      where: { nome: nome.toLowerCase() },
     });
     if (checkProfissao) {
-      return res
-        .status(401)
-        .json({ error: `${req.body.nome} não está disponível.` });
+      return res.status(401).json({ error: `${nome} não está disponível.` });
     }
 
-    await Profissao.create(req.body);
+    await Profissao.create({ nome: nome.toLowerCase() });
 
     return res.status(200).json({
       message: `Profissão cadastrada com sucesso.`,
@@ -47,18 +47,19 @@ class ProfissaoController {
 
   async update(req, res) {
     const profissao = await Profissao.findByPk(req.params.id);
+    const nomeProfissao = req.body.nome;
 
     if (!profissao) {
       return res.status(401).json({ error: `Profissão não encontrada.` });
     }
 
-    if (profissao.nome === req.body.nome.toLowerCase()) {
+    if (profissao.nome === nomeProfissao.toLowerCase()) {
       return res
         .status(401)
-        .json({ error: `${req.body.nome} já está cadastrado.` });
+        .json({ error: `${nomeProfissao} já está cadastrado.` });
     }
 
-    await profissao.update(req.body);
+    await profissao.update({ nome: nomeProfissao.toLowerCase() });
 
     return res
       .status(200)

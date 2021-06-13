@@ -4,85 +4,82 @@ import Atendimento from "../models/Atendimento";
 
 class AtendimentoController {
   async index(req, res) {
-    const id = req.params.id;
-
-    if (id) {
-      const usuario = await Atendimento.findAll({
-        where: { id: id },
-        attributes: { exclude: ["created_at", "updated_at"] },
-      });
-
-      if (!usuario) {
-        return res
-          .status(401)
-          .json({ error: `Nenhum atendimento encontrado.` });
-      }
-
-      return res.status(200).json(usuario);
-    }
-
     const atendimentos = await Atendimento.findAll({
       attributes: { exclude: ["created_at", "updated_at"] },
     });
 
-    if (!atendimentos) {
-      return res.status(401).json({ error: `Nenhum atendimento realizado.` });
+    if (atendimentos.length === 0) {
+      return res.status(401).json({ error: `Nenhum atendimento encontrado.` });
     }
 
     return res.status(200).json(atendimentos);
   }
 
   async show(req, res) {
-    const { id, status } = req.params;
-    if (id) {
-      const atendimentos = Atendimento.findAll({
-        where: { usuario_id: id },
+    const { idcliente, idatendimento, status } = req.query;
+
+    if (idcliente) {
+      const atendimentos = await Atendimento.findAll({
+        where: { cliente_id: idcliente },
         attributes: { exclude: ["created_at", "updated_at"] },
       });
-
-      if (!atendimentos) {
+      if (atendimentos.length === 0) {
         return res
           .status(401)
           .json({ error: `Nenhum atendimento encontrado.` });
       }
-
       return res.status(200).json(atendimentos);
     }
 
-    if (status.toUpperCase() === "AGENDADO") {
-      const statusAgendado = Atendimento.findAll({
-        where: { atendimento_status: "AGENDADO" },
+    if (idatendimento) {
+      const atendimento = await Atendimento.findAll({
+        where: { cliente_id: idatendimento },
+        attributes: { exclude: ["created_at", "updated_at"] },
+      });
+      if (atendimento.length === 0) {
+        return res
+          .status(401)
+          .json({ error: `Nenhum atendimento encontrado.` });
+      }
+      return res.status(200).json(atendimento);
+    }
+
+    if (status == "AGENDADO") {
+      const atendimentosAgendados = await Atendimento.findAll({
+        where: { status: "AGENDADO" },
       });
 
-      if (!statusAgendado) {
-        res.status(200).json({ error: "Nenhum registro com status agendado." });
+      if (atendimentosAgendados.length === 0) {
+        return res
+          .status(200)
+          .json({ error: "Nenhum atendimento agendado foi encontrado." });
       }
 
-      return res.status(200).json(statusAgendado);
-    } else if (status.toUpperCase() === "REALIZADO") {
-      const statusRealizados = Atendimento.findAll({
-        where: { atendimento_status: "REALIZADO" },
+      return res.status(200).json(atendimentosAgendados);
+    } else if (status == "REALIZADO") {
+      const atendimentosRealizados = Atendimento.findAll({
+        where: { status: "REALIZADO" },
       });
 
-      if (!statusRealizados) {
+      if ((await atendimentosRealizados).length === 0) {
         res
           .status(200)
-          .json({ error: "Nenhum registro com status realizado." });
+          .json({ error: "Nenhum atendimento realizado foi encontrado." });
       }
 
-      return res.status(200).json(statusRealizados);
-    } else if (status.toUpperCase() === "CANCELADO") {
-      const statusCancelado = Atendimento.findAll({
-        where: { atendimento_status: "CANCELADO" },
+      return res.status(200).json(atendimentosRealizados);
+    } else if (status == "CANCELADO") {
+      const atendimentosCancelados = Atendimento.findAll({
+        where: { status: "CANCELADO" },
       });
 
-      if (!statusCancelado) {
+      if ((await atendimentosCancelados).length === 0) {
         res
           .status(200)
-          .json({ error: "Nenhum registro com status cancelado." });
+          .json({ error: "Nenhum atendimento cancelado foi encontrado." });
       }
 
-      return res.status(200).json(statusCancelado);
+      return res.status(200).json(atendimentosCancelados);
     }
   }
 

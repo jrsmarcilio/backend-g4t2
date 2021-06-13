@@ -4,18 +4,34 @@
   "description": "CRUD para aula de teste",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "sucrase ./src -d ./dist --transforms imports",
-    "dev": "nodemon src/server",
-    "start": "node dist/server"
+    "dev": "nodemon src/server --ignore test",
+    "start": "node dist/server",
+    "start_prod": "sucrase ./src -d ./dist --transforms imports && node dist/server"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "modules": "commonjs",
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "address-br": "^1.5.6",
+    "babel-jest": "^27.0.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.6.2",
@@ -23,8 +39,10 @@
     "uuidv4": "^6.2.8"
   },
   "devDependencies": {
+    "jest": "^27.0.4",
     "nodemon": "^2.0.7",
     "sequelize-cli": "^6.2.0",
-    "sucrase": "^3.18.1"
+    "sucrase": "^3.18.1",
+    "supertest": "^6.1.3"
   }
 }

@@ -9,6 +9,7 @@ class Cliente extends Model {
         telefone: Sequelize.STRING,
         celular: Sequelize.STRING,
         email: Sequelize.STRING,
+        endereco_id: Sequelize.INTEGER,
         tipo_sanguineo: Sequelize.DataTypes.ENUM(
           "A+",
           "A-",
@@ -29,7 +30,7 @@ class Cliente extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Endereco, { foreignKey: "id" });
+    this.belongsTo(models.Endereco, { foreignKey: "endereco_id" });
   }
 }
 

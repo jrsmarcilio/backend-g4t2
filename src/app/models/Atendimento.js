@@ -8,12 +8,9 @@ class Atendimento extends Model {
         data_atendimento: Sequelize.DATE,
         hora_atendimento: Sequelize.DATE,
         valor: Sequelize.INTEGER,
+        cliente_id: Sequelize.INTEGER,
         especialista_id: Sequelize.INTEGER,
-        atendimento_status: Sequelize.DataTypes.ENUM(
-          "AGENDADO",
-          "REALIZADO",
-          "CANCELADO"
-        ),
+        status: Sequelize.DataTypes.ENUM("AGENDADO", "REALIZADO", "CANCELADO"),
       },
       {
         sequelize,
@@ -24,10 +21,10 @@ class Atendimento extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Cliente, { foreignKey: "id" });
+    this.belongsTo(models.Cliente, { foreignKey: "cliente_id" });
   }
   static associate(models) {
-    this.belongsTo(models.Especialista, { foreignKey: "id" });
+    this.belongsTo(models.Especialistas, { foreignKey: "especialista_id" });
   }
 }
 

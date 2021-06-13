@@ -1,35 +1,51 @@
-import Especialista from "../models/Especialista";
+import Especialista from "../models/Especialistas";
 import Endereco from "../models/Endereco";
 
 import FormaterString from "../../utils/FormaterString";
 
 class EspecialistaController {
-  async index(req, res) {
-    const especialistas = await Especialista.findAll({
-      attributes: [
-        "id",
-        "registro",
-        "nome",
-        "telefone",
-        "celular",
-        "email",
-        "createdAt",
-        "updatedAt",
+  async show(req, res) {
+    const especialista = await Especialista.findAll({
+      where: { registro: req.body.registro },
+      attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
+      include: [
+        {
+          model: Endereco,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+          // required: true,
+        },
       ],
-      include: Endereco,
     });
 
-    if (especialistas.length === 0) {
-      return res
-        .status(401)
-        .json({ error: "Nenhum Especialista foi encontrado." });
+    if (especialista.length === 0) {
+      return res.status(401).json({ error: "Nenhum registro encontrado." });
     }
 
-    return res.status(200).json(especialistas);
+    return res.status(200).json(especialista);
+  }
+
+  async index(req, res) {
+    const especialista = await Especialista.findAll({
+      attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
+      include: [
+        {
+          model: Endereco,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+          // required: true,
+        },
+      ],
+    });
+
+    if (especialista.length === 0) {
+      return res.status(401).json({ error: "Nenhum registro encontrado." });
+    }
+
+    return res.status(200).json(especialista);
   }
 
   async store(req, res) {
-    const { registro, nome, telefone, celular, email } = req.body;
+    const { registro, nome, telefone, celular, email, tipo_sanguineo } =
+      req.body;
 
     if (
       registro == null ||
@@ -39,34 +55,37 @@ class EspecialistaController {
       email == null
     ) {
       return res.status(400).json({
-        error: "Por gentileza, preencha todos os campos.",
+        error: "Algum campo não foi preenchido.",
       });
     }
 
-    const registerFormated = FormaterString(registro);
+    const registroFormated = FormaterString(registro);
 
-    // const checkRegister = await Especialista.findOne({
-    //   where: { registro: registerFormated },
-    // });
-    // if (checkRegister) {
-    //   return res.status(401).json({ error: `${registro} já está cadastrado.` });
-    // }
+    const checkRegistro = await Especialista.findOne({
+      where: { registro: registroFormated },
+    });
+    if (checkRegistro) {
+      return res
+        .status(401)
+        .json({ error: `${registro} não está disponivel.` });
+    }
 
     await Especialista.create({
-      registro,
+      registro: registroFormated,
       nome,
       telefone,
       celular,
       email,
+      tipo_sanguineo,
     });
 
     return res.status(200).json({
-      message: `O especialista foi cadastrado com sucesso.`,
+      message: `O Especialista foi cadastrado com sucesso.`,
     });
   }
 
   async update(req, res) {
-    const registro = req.params.registro;
+    const registro = await FormaterString(req.params.registro);
 
     const especialista = await Especialista.findOne({
       where: { registro: registro },
@@ -76,7 +95,15 @@ class EspecialistaController {
       return res.status(401).json({ error: `Os dados não foram encontrados.` });
     }
 
-    await especialista.update(req.body);
+    await especialista.update({
+      registro: registro,
+      nome: req.body.nome,
+      telefone: req.body.telefone,
+      celular: req.body.celular,
+      email: req.body.email,
+      profissao_id: req.body.profissao_id,
+      endereco_id: req.body.endereco_id,
+    });
 
     return res
       .status(200)

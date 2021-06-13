@@ -1,6 +1,6 @@
 import Sequelize, { Model } from "sequelize";
 
-class Especialista extends Model {
+class Especialistas extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -9,8 +9,8 @@ class Especialista extends Model {
         telefone: Sequelize.STRING,
         celular: Sequelize.STRING,
         email: Sequelize.STRING,
-        profissao_id: Sequelize.INTEGER,
         endereco_id: Sequelize.INTEGER,
+        profissao_id: Sequelize.INTEGER,
       },
       {
         sequelize,
@@ -19,13 +19,10 @@ class Especialista extends Model {
 
     return this;
   }
-
   static associate(models) {
-    this.belongsTo(models.Endereco, { foreignKey: "id" });
-  }
-  static associate(models) {
-    this.belongsTo(models.Profissao, { foreignKey: "id" });
+    this.belongsTo(models.Endereco, { foreignKey: "endereco_id" }),
+      this.belongsTo(models.Profissao, { foreignKey: "profissao_id" });
   }
 }
 
-export default Especialista;
+export default Especialistas;

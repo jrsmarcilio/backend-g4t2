@@ -1,75 +1,67 @@
 import Endereco from "../models/Endereco";
-import Especialista from "../models/Especialista";
+import Especialista from "../models/Especialistas";
 
 import { getAddress } from "address-br";
+import FormaterString from "../../utils/FormaterString";
 
 class EnderecoEspecialistaController {
-  async index(req, res) {
-    //  GET - ENDEREÇO EM JSON
-    try {
-      const address = await getAddress(req.params.cep);
-      return res.status(200).json(address);
-    } catch (error) {
-      res
-        .status(error.response.status)
-        .json({ error: "O Endereço não encontrado." });
-    }
-  }
-
   async store(req, res) {
-    //  POST - CRIAÇÃO DE ENDEREÇO
-    // const id = req.params.id;
-    const { cep, rua: logradouro, numero, bairro, cidade, estado } = req.body;
+    await getAddress(req.body.cep)
+      .then(async (result) => {
+        const endereco = await Endereco.create({
+          cep: result.cep,
+          logradouro: result.rua,
+          numero: result.numero,
+          bairro: result.bairro,
+          cidade: result.cidade,
+          estado: result.estado,
+        });
+        const especialista = await Especialista.findOne({
+          where: { registro: FormaterString(registro) },
+        });
+        await especialista.update({ endereco_id: endereco.id });
 
-    const endereco = await Endereco.create({
-      cep: cep,
-      logradouro: logradouro,
-      numero: numero,
-      bairro: bairro,
-      cidade: cidade,
-      estado: estado,
-    });
-
-    if (!endereco) {
-      return res.status(401).json({ error: `O Endereço não foi cadastrado.` });
-    }
-
-    return res.status(200).json({
-      message: `O Endereço foi cadastrado com sucesso.`,
-    });
+        return res.status(200).json({
+          message: `O Endereço foi cadastrado com sucesso.`,
+        });
+      })
+      .catch((err) => {
+        return res.status(err.response.status).json({
+          error: err.message,
+        });
+      });
   }
 
   async update(req, res) {
-    //  PUT - EDIÇÃO DE ENDEREÇO
-    try {
-      const address = await getAddress(req.body.cep);
-      const especialista = await Especialista.findByPk(req.params.id);
-      const endereco = await Endereco.findByPk(especialista.endereco_id);
-
-      await endereco.update({
-        cep: address.cep,
-        logradouro: address.rua,
-        numero: req.body.numero,
-        bairro: address.bairro,
-        cidade: address.cidade,
-        estado: address.estado,
+    await getAddress(req.body.cep)
+      .then(async (result) => {
+        const especialista = await Especialista.findByPk(req.params.id);
+        const endereco = await Endereco.findByPk(especialista.endereco_id);
+        await endereco.update({
+          cep: result.cep,
+          logradouro: result.rua,
+          numero: req.body.numero,
+          bairro: result.bairro,
+          cidade: result.cidade,
+          estado: result.estado,
+        });
+        return res.status(200).json({ message: "O Endereço foi atualizado." });
+      })
+      .catch((err) => {
+        return res.status(err.response.status).json({ err: err.message });
       });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
   }
 
   async destroy(req, res) {
     try {
       const especialista = await Especialista.findByPk(req.params.id);
-      const endereco = await Endereco.destroy({
+      await especialista.update({ endereco_id: null });
+      await Endereco.destroy({
         where: { id: especialista.endereco_id },
       });
-      if (endereco) {
-        return res.status(200).json({ message: "O Endereço foi excluido." });
-      }
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+      return res.status(200).json({ message: "O Endereço foi excluido." });
+    } catch (err) {
+      res.status(err.response.status).json({ error: error.message });
     }
   }
 }

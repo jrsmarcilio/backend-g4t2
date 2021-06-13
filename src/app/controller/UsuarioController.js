@@ -2,13 +2,12 @@ import Usuario from "../models/Usuario";
 
 class UsuarioController {
   async show(req, res) {
-    const usuario = await Usuario.findOne({
+    const usuario = await Usuario.findAll({
       where: { id: req.params.id },
       attributes: ["id", "login", "nome"],
     });
-
-    if (!usuario) {
-      return res.status(401).json({ error: `Nenhum usuário encontrado.` });
+    if (usuario.length === 0) {
+      return res.status(400).json({ error: `Nenhum usuário encontrado` });
     }
 
     return res.status(200).json(usuario);

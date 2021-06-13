@@ -1,22 +1,39 @@
 import Cliente from "../models/Cliente";
+import Endereco from "../models/Endereco";
 
 import FormaterString from "../../utils/FormaterString";
 
 class ClienteController {
+  async show(req, res) {
+    const cliente = await Cliente.findAll({
+      where: { cpf: req.params.cpf },
+      attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
+      include: [
+        {
+          model: Endereco,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+          // required: true,
+        },
+      ],
+    });
+
+    if (cliente.length === 0) {
+      return res.status(400).json({ error: `Nenhum cliente foi encontrado` });
+    }
+
+    return res.status(200).json(cliente);
+  }
+
   async index(req, res) {
     const clientes = await Cliente.findAll({
-      attributes: [
-        "id",
-        "nome",
-        "cpf",
-        "telefone",
-        "celular",
-        "email",
-        "tipo_sanguineo",
-        "createdAt",
-        "updatedAt",
+      attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
+      include: [
+        {
+          model: Endereco,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+          // required: true,
+        },
       ],
-      // include: Endereco,
     });
 
     if (clientes.length === 0) {
@@ -66,7 +83,7 @@ class ClienteController {
   }
 
   async update(req, res) {
-    const cpf = FormaterString(req.params.cpf);
+    const cpf = await FormaterString(req.params.cpf);
 
     const cliente = await Cliente.findOne({
       where: { cpf: cpf },
@@ -75,8 +92,15 @@ class ClienteController {
     if (!cliente) {
       return res.status(401).json({ error: `Os dados não foram encontrados.` });
     }
-
-    await cliente.update(req.body);
+    await cliente.update({
+      cpf: cpf,
+      nome: req.body.nome,
+      telefone: req.body.telefone,
+      celular: req.body.celular,
+      email: req.body.email,
+      tipo_sanguineo: req.body.tipo_sanguineo,
+      endereco_id: req.body.endereco_id,
+    });
 
     return res
       .status(200)
@@ -84,7 +108,7 @@ class ClienteController {
   }
 
   async destroy(req, res) {
-    const cpf = FormaterString(req.params.cpf);
+    const cpf = await FormaterString(req.params.cpf);
 
     const cliente = await Cliente.findOne({
       where: { cpf: cpf },

@@ -1,6 +1,6 @@
 import Sequelize, { Model } from "sequelize";
 
-class Especialista extends Model {
+class ProntuarioHistorico extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -19,11 +19,11 @@ class Especialista extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Prontuario, { foreignKey: "id" });
+    this.belongsTo(models.Prontuario, { foreignKey: "prontuario_id" });
   }
   static associate(models) {
-    this.belongsTo(models.Especialista, { foreignKey: "id" });
+    this.belongsTo(models.Especialistas, { foreignKey: "especialista_id" });
   }
 }
 
-export default Especialista;
+export default ProntuarioHistorico;

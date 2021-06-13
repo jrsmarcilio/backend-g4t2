@@ -1,6 +1,6 @@
 import Sequelize, { Model } from "sequelize";
 
-class Atendimento extends Model {
+class Prontuario extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -16,8 +16,8 @@ class Atendimento extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Cliente, { foreignKey: "id" });
+    this.belongsTo(models.Cliente, { foreignKey: "cliente_id" });
   }
 }
 
-export default Atendimento;
+export default Prontuario;

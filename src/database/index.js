@@ -5,7 +5,7 @@ import Sequelize from "sequelize";
 import Atendimento from "../app/models/Atendimento";
 import Cliente from "../app/models/Cliente";
 import Endereco from "../app/models/Endereco";
-import Especialista from "../app/models/Especialista";
+import Especialista from "../app/models/Especialistas";
 import Profissao from "../app/models/Profissao";
 import Prontuario from "../app/models/Prontuario";
 import ProntuarioHistorico from "../app/models/ProntuarioHistorico";
