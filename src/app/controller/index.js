@@ -1,23 +1,13 @@
-import Atendimento from "./AtendimentoController";
-import Cliente from "./ClienteController";
-import Endereco from "./EnderecoController";
-import Especialista from "./EspecialistaController";
-import Profissao from "./ProfissaoController";
-import Prontuario from "./ProntuarioController";
-import Session from "./SessionController";
-import Usuario from "./UsuarioController";
-import EnderecoEspecialista from "./EnderecoEspecialistaController";
-import ProntuarioHistorico from "./ProntuarioHistoricoController";
+import Atendimento from "./Atendimento";
+import Paciente from "./Paciente";
+import Especialista from "./Especialista";
+import Profissao from "./Profissao";
+import Session from "./Session";
 
 export default {
   Atendimento,
-  Cliente,
-  Endereco,
+  Paciente,
   Especialista,
   Profissao,
-  Prontuario,
   Session,
-  Usuario,
-  EnderecoEspecialista,
-  ProntuarioHistorico,
 };
