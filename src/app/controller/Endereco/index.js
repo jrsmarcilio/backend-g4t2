@@ -1,8 +1,8 @@
-import Endereco from "../models/Endereco";
-import Cliente from "../models/Cliente";
+import Endereco from "../../models/Endereco";
+import Paciente from "../../models/Paciente";
 
 import { getAddress } from "address-br";
-import FormaterString from "../../utils/FormaterString";
+import FormaterString from "../../../utils/FormaterString";
 
 class EnderecoController {
   async index(req, res) {
@@ -28,10 +28,10 @@ class EnderecoController {
           estado: result.estado,
           numero: req.body.numero,
         });
-        const cliente = await Cliente.findOne({
+        const paciente = await Paciente.findOne({
           where: { cpf: FormaterString(req.body.cpf) },
         });
-        await cliente.update({ endereco_id: endereco.id });
+        await paciente.update({ endereco_id: endereco.id });
 
         return res.status(200).json({
           message: `Endereço cadastrado com sucesso.`,
@@ -47,8 +47,8 @@ class EnderecoController {
   async update(req, res) {
     await getAddress(req.body.cep)
       .then(async (result) => {
-        const cliente = await Cliente.findByPk(req.params.id);
-        const endereco = await Endereco.findByPk(cliente.endereco_id);
+        const paciente = await Paciente.findByPk(req.params.id);
+        const endereco = await Endereco.findByPk(paciente.endereco_id);
         await endereco.update({
           cep: result.cep,
           logradouro: result.rua,
@@ -66,10 +66,10 @@ class EnderecoController {
 
   async destroy(req, res) {
     try {
-      const cliente = await Cliente.findByPk(req.params.id);
-      await cliente.update({ endereco_id: null });
+      const paciente = await Paciente.findByPk(req.params.id);
+      await paciente.update({ endereco_id: null });
       await Endereco.destroy({
-        where: { id: cliente.endereco_id },
+        where: { id: paciente.endereco_id },
       });
       return res.status(200).json({ message: "O Endereço foi excluido." });
     } catch (err) {

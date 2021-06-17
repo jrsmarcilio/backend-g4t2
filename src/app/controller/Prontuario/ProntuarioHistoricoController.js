@@ -1,6 +1,6 @@
-import Atendimento from "../models/Atendimento";
-import Prontuario from "../models/Prontuario";
-import ProntuarioHistorico from "../models/ProntuarioHistorico";
+import Atendimento from "../../models/Atendimento";
+import Prontuario from "../../models/Prontuario";
+import ProntuarioHistorico from "../../models/ProntuarioHistorico";
 
 class ProntuarioHistoricoController {
   async show(req, res) {
@@ -34,16 +34,16 @@ class ProntuarioHistoricoController {
 
   async store(req, res) {
     try {
-      const clienteId = req.params.id;
+      const pacienteId = req.params.id;
 
       const atendimento = Atendimento.findOne({
-        where: { paciente_id: clienteId },
+        where: { paciente_id: pacienteId },
       });
 
       await atendimento.update({ status: "REALIZADO" });
 
       const prontuario = Prontuario.findOne({
-        where: { paciente_id: clienteId },
+        where: { paciente_id: pacienteId },
       });
 
       await ProntuarioHistorico.create({

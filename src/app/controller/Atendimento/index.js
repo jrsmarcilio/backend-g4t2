@@ -16,11 +16,11 @@ class AtendimentoController {
   }
 
   async show(req, res) {
-    const { idcliente, idatendimento, status } = req.query;
+    const { idPaciente, idatendimento, status } = req.query;
 
-    if (idcliente) {
+    if (idPaciente) {
       const atendimentos = await Atendimento.findAll({
-        where: { paciente_id: idcliente },
+        where: { paciente_id: idPaciente },
         attributes: { exclude: ["created_at", "updated_at"] },
       });
       if (atendimentos.length === 0) {

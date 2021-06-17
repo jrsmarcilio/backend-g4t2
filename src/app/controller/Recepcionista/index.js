@@ -1,32 +1,32 @@
-import Usuario from "../models/Usuario";
+import Recepcionista from "../../models/Recepcionista";
 
-class UsuarioController {
+class RecepcionistaController {
   async show(req, res) {
-    const usuario = await Usuario.findAll({
+    const recepcionista = await Recepcionista.findAll({
       where: { id: req.params.id },
       attributes: ["id", "login", "nome"],
     });
-    if (usuario.length === 0) {
+    if (recepcionista.length === 0) {
       return res.status(400).json({ error: `Nenhum usuário encontrado` });
     }
 
-    return res.status(200).json(usuario);
+    return res.status(200).json(recepcionista);
   }
 
   async index(req, res) {
-    const usuarios = await Usuario.findAll({
+    const recepcionistas = await Recepcionista.findAll({
       attributes: ["id", "login", "nome"],
     });
 
-    if (usuarios.length === 0) {
+    if (recepcionistas.length === 0) {
       return res.status(401).json({ error: "Nenhum usuário encontrado." });
     }
 
-    return res.status(200).json(usuarios);
+    return res.status(200).json(recepcionistas);
   }
 
   async store(req, res) {
-    const checkLogin = await Usuario.findOne({
+    const checkLogin = await Recepcionista.findOne({
       where: { login: req.body.login },
     });
     if (checkLogin) {
@@ -35,7 +35,7 @@ class UsuarioController {
         .json({ error: `${req.body.login} não está disponível.` });
     }
 
-    await Usuario.create(req.body);
+    await Recepcionista.create(req.body);
 
     return res.status(200).json({
       message: `Usuário cadastrado com sucesso.`,
@@ -43,13 +43,13 @@ class UsuarioController {
   }
 
   async update(req, res) {
-    const usuario = await Usuario.findByPk(req.params.id);
+    const recepcionista = await Recepcionista.findByPk(req.params.id);
 
-    if (!usuario) {
+    if (!recepcionista) {
       return res.status(401).json({ error: `Usuário não encontrado.` });
     }
 
-    const checkLogin = await Usuario.findOne({
+    const checkLogin = await Recepcionista.findOne({
       where: { login: req.body.login },
     });
     if (checkLogin) {
@@ -58,7 +58,7 @@ class UsuarioController {
         .json({ error: `${req.body.login} não está disponível.` });
     }
 
-    await usuario.update(req.body);
+    await recepcionista.update(req.body);
 
     return res.status(200).json({ message: `Usuário atualizado com sucesso.` });
   }
@@ -66,15 +66,15 @@ class UsuarioController {
   async destroy(req, res) {
     const id = req.params.id;
 
-    const usuario = await Usuario.findByPk(id);
-    if (!usuario) {
+    const recepcionista = await Recepcionista.findByPk(id);
+    if (!recepcionista) {
       return res.status(401).json({ error: `Usuário não encontrado.` });
     }
 
-    await Usuario.destroy({ where: { id: req.params.id } });
+    await Recepcionista.destroy({ where: { id: req.params.id } });
 
     return res.status(200).json({ message: `Usuário deletado com sucesso.` });
   }
 }
 
-export default new UsuarioController();
+export default new RecepcionistaController();

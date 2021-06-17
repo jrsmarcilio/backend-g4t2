@@ -1,11 +1,11 @@
-import Cliente from "../../models/Paciente";
+import Paciente from "../../models/Paciente";
 import Endereco from "../../models/Endereco";
 
 import FormaterString from "../../../utils/FormaterString";
 
 class PacienteController {
   async show(req, res) {
-    const cliente = await Cliente.findAll({
+    const paciente = await Paciente.findAll({
       where: { cpf: req.params.cpf },
       attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
       include: [
@@ -17,15 +17,15 @@ class PacienteController {
       ],
     });
 
-    if (cliente.length === 0) {
-      return res.status(400).json({ error: `Nenhum cliente foi encontrado` });
+    if (paciente.length === 0) {
+      return res.status(400).json({ error: `Nenhum paciente foi encontrado` });
     }
 
-    return res.status(200).json(cliente);
+    return res.status(200).json(paciente);
   }
 
   async index(req, res) {
-    const clientes = await Cliente.findAll({
+    const pacientes = await Paciente.findAll({
       attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
       include: [
         {
@@ -36,11 +36,11 @@ class PacienteController {
       ],
     });
 
-    if (clientes.length === 0) {
-      return res.status(401).json({ error: "Nenhum cliente foi encontrado." });
+    if (pacientes.length === 0) {
+      return res.status(401).json({ error: "Nenhum paciente foi encontrado." });
     }
 
-    return res.status(200).json(clientes);
+    return res.status(200).json(pacientes);
   }
 
   async store(req, res) {
@@ -61,14 +61,14 @@ class PacienteController {
 
     const cpfFormated = FormaterString(cpf);
 
-    const checkCPF = await Cliente.findOne({
+    const checkCPF = await Paciente.findOne({
       where: { cpf: cpfFormated },
     });
     if (checkCPF) {
       return res.status(401).json({ error: `${cpf} já está cadastrado.` });
     }
 
-    await Cliente.create({
+    await Paciente.create({
       cpf: cpfFormated,
       nome,
       telefone,
@@ -85,14 +85,14 @@ class PacienteController {
   async update(req, res) {
     const cpf = await FormaterString(req.params.cpf);
 
-    const cliente = await Cliente.findOne({
+    const paciente = await Paciente.findOne({
       where: { cpf: cpf },
     });
 
-    if (!cliente) {
+    if (!paciente) {
       return res.status(401).json({ error: `Os dados não foram encontrados.` });
     }
-    await cliente.update({
+    await paciente.update({
       cpf: cpf,
       nome: req.body.nome,
       telefone: req.body.telefone,
@@ -110,15 +110,15 @@ class PacienteController {
   async destroy(req, res) {
     const cpf = await FormaterString(req.params.cpf);
 
-    const cliente = await Cliente.findOne({
+    const paciente = await Paciente.findOne({
       where: { cpf: cpf },
     });
 
-    if (!cliente) {
+    if (!paciente) {
       return res.status(401).json({ error: `Os dados não foram encontrados.` });
     }
 
-    await cliente.destroy({
+    await paciente.destroy({
       where: {
         cpf: cpf,
       },

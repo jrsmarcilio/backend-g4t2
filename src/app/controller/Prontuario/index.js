@@ -1,4 +1,4 @@
-import Prontuario from "../models/Prontuario";
+import Prontuario from "../../models/Prontuario";
 import Exists from "../../middlewares/validations/Exists";
 
 class ProntuarioController {

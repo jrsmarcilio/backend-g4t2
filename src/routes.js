@@ -6,27 +6,27 @@ import authMiddleware from "./app/middlewares/auth";
 const routes = new Router();
 
 // Rotas do Usuário - [ OK ]
-routes.get("/usuario", authMiddleware, Controller.Usuario.index);
-routes.get("/usuario/:id", authMiddleware, Controller.Usuario.show);
-routes.post("/usuario", Controller.Usuario.store);
-routes.put("/usuario/:id", authMiddleware, Controller.Usuario.update);
-routes.delete("/usuario/:id", authMiddleware, Controller.Usuario.destroy);
+routes.get("/recep", authMiddleware, Controller.Recepcionista.index);
+routes.get("/recep/:id", authMiddleware, Controller.Recepcionista.show);
+routes.post("/recep", Controller.Recepcionista.store);
+routes.put("/recep/:id", authMiddleware, Controller.Recepcionista.update);
+routes.delete("/recep/:id", authMiddleware, Controller.Recepcionista.destroy);
 
 // Create Session
-routes.post("/session", SessionController.store);
+routes.post("/session", Controller.Session.store);
 
 routes.get("/", (req, res, next) => {
   next();
 });
 
-// Rotas do Cliente - [ OK ]
-routes.post("/cliente", authMiddleware, Controller.Cliente.store);
-routes.get("/cliente", authMiddleware, Controller.Cliente.index);
-routes.get("/cliente/:cpf", authMiddleware, Controller.Cliente.show);
-routes.put("/cliente/:cpf", authMiddleware, Controller.Cliente.update);
-routes.delete("/cliente/:cpf", authMiddleware, Controller.Cliente.destroy);
+// Rotas do Paciente - [ OK ]
+routes.post("/paciente", authMiddleware, Controller.Paciente.store);
+routes.get("/paciente", authMiddleware, Controller.Paciente.index);
+routes.get("/paciente/:id", authMiddleware, Controller.Paciente.show);
+routes.put("/paciente/:id", authMiddleware, Controller.Paciente.update);
+routes.delete("/paciente/:id", authMiddleware, Controller.Paciente.destroy);
 
-// Endereço do Cliente - [ OK ]
+// Endereço do Paciente - [ OK ]
 routes.post("/endereco/json", Controller.Endereco.store);
 routes.post("/endereco/json/:id", Controller.Endereco.store);
 routes.get("/endereco/json", Controller.Endereco.index);

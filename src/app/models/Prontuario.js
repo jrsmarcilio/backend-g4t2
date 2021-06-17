@@ -16,8 +16,8 @@ class Prontuario extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Cliente, { foreignKey: "paciente_id" }),
-      this.belongsToMany(models.ProntuarioHistorico, { foreignKey: "id" });
+    this.belongsTo(models.Paciente, { foreignKey: "paciente_id" }),
+      this.belongsToMany(models.ProntuarioHistorico, { foreignKey: "id", through: "ProntsHistorico" });
   }
 }
 

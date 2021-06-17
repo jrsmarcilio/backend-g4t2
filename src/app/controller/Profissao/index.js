@@ -1,4 +1,4 @@
-import Profissao from "../models/Profissao";
+import Profissao from "../../models/Profissao";
 
 class ProfissaoController {
   async show(req, res) {

@@ -3,25 +3,25 @@ require("dotenv/config");
 import Sequelize from "sequelize";
 
 import Atendimento from "../app/models/Atendimento";
-import Cliente from "../app/models/Cliente";
+import Paciente from "../app/models/Paciente";
 import Endereco from "../app/models/Endereco";
 import Especialista from "../app/models/Especialistas";
 import Profissao from "../app/models/Profissao";
 import Prontuario from "../app/models/Prontuario";
 import ProntuarioHistorico from "../app/models/ProntuarioHistorico";
-import Usuario from "../app/models/Usuario";
+import Recepcionista from "../app/models/Recepcionista";
 
 import databaseconfig from "../config/database";
 
 const models = [
   Atendimento,
-  Cliente,
+  Paciente,
   Endereco,
   Especialista,
   Profissao,
   Prontuario,
   ProntuarioHistorico,
-  Usuario,
+  Recepcionista,
 ];
 
 class Database {

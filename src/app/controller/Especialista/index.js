@@ -1,7 +1,7 @@
-import Especialista from "../models/Especialistas";
-import Endereco from "../models/Endereco";
+import Especialista from "../../models/Especialistas";
+import Endereco from "../../models/Endereco";
 
-import FormaterString from "../../utils/FormaterString";
+import FormaterString from "../../../utils/FormaterString";
 
 class EspecialistaController {
   async show(req, res) {
