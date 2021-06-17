@@ -1,7 +1,7 @@
 import Sequelize, { Model } from "sequelize";
 import bcrypt from "bcryptjs";
 
-class Usuario extends Model {
+class Recepcionista extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -17,7 +17,7 @@ class Usuario extends Model {
 
     this.addHook("beforeSave", async (usuario) => {
       if (usuario.senha) {
-        usuario.senha_hash = await bcrypt.hash(usuario.senha, 15);
+        usuario.senha_hash = await bcrypt.hash(usuario.senha, 10);
       }
     });
 
@@ -29,4 +29,4 @@ class Usuario extends Model {
   }
 }
 
-export default Usuario;
+export default Recepcionista;

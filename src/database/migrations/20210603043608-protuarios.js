@@ -9,10 +9,10 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      cliente_id: {
+      paciente_id: {
        type: Sequelize.INTEGER,
         references: {
-          model: "clientes",
+          model: "pacientes",
           key: "id",
           onUpdate: "CASCADE",
           onDelete: "SET NULL",

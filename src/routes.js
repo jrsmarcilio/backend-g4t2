@@ -1,70 +1,64 @@
 import { Router } from "express";
 
-import UsuarioController from "./app/controller/UsuarioController";
-import ClienteController from "./app/controller/ClienteController";
-import EspecialistaController from "./app/controller/EspecialistaController";
-import EnderecoController from "./app/controller/EnderecoController";
-import EnderecoEspecialistaController from "./app/controller/EnderecoEspecialistaController";
-import AtendimentoController from "./app/controller/AtendimentoController";
-import ProfissaoController from "./app/controller/ProfissaoController";
-import SessionController from "./app/controller/SessionController";
+import Controller from "./app/controller";
+import authMiddleware from "./app/middlewares/auth";
 
 const routes = new Router();
 
-import authMiddleware from "./app/middlewares/auth";
-
 // Rotas do Usuário - [ OK ]
-routes.get("/usuario", authMiddleware, UsuarioController.index);
-routes.get("/usuario/:id", authMiddleware, UsuarioController.show);
-routes.post("/usuario", UsuarioController.store);
-routes.put("/usuario/:id", authMiddleware, UsuarioController.update);
-routes.delete("/usuario/:id", authMiddleware, UsuarioController.destroy);
+routes.get("/usuario", authMiddleware, Controller.Usuario.index);
+routes.get("/usuario/:id", authMiddleware, Controller.Usuario.show);
+routes.post("/usuario", Controller.Usuario.store);
+routes.put("/usuario/:id", authMiddleware, Controller.Usuario.update);
+routes.delete("/usuario/:id", authMiddleware, Controller.Usuario.destroy);
 
 // Create Session
 routes.post("/session", SessionController.store);
 
-routes.use(authMiddleware);
+routes.get("/", (req, res, next) => {
+  next();
+});
 
 // Rotas do Cliente - [ OK ]
-routes.post("/cliente", ClienteController.store);
-routes.get("/cliente", ClienteController.index);
-routes.get("/cliente/:cpf", ClienteController.show);
-routes.put("/cliente/:cpf", ClienteController.update);
-routes.delete("/cliente/:cpf", ClienteController.destroy);
+routes.post("/cliente", authMiddleware, Controller.Cliente.store);
+routes.get("/cliente", authMiddleware, Controller.Cliente.index);
+routes.get("/cliente/:cpf", authMiddleware, Controller.Cliente.show);
+routes.put("/cliente/:cpf", authMiddleware, Controller.Cliente.update);
+routes.delete("/cliente/:cpf", authMiddleware, Controller.Cliente.destroy);
 
 // Endereço do Cliente - [ OK ]
-routes.post("/endereco/json", EnderecoController.store);
-routes.post("/endereco/json/:id", EnderecoController.store);
-routes.get("/endereco/json", EnderecoController.index);
-routes.get("/endereco/json/:cep", EnderecoController.show);
-routes.put("/endereco/json/:id", EnderecoController.update);
-routes.delete("/endereco/json/:id", EnderecoController.destroy);
+routes.post("/endereco/json", Controller.Endereco.store);
+routes.post("/endereco/json/:id", Controller.Endereco.store);
+routes.get("/endereco/json", Controller.Endereco.index);
+routes.get("/endereco/json/:cep", Controller.Endereco.show);
+routes.put("/endereco/json/:id", Controller.Endereco.update);
+routes.delete("/endereco/json/:id", Controller.Endereco.destroy);
 
 // Rotas do Especialista - [ OK ]
-routes.get("/especialista/:registro", EspecialistaController.show);
-routes.get("/especialista", EspecialistaController.index);
-routes.post("/especialista", EspecialistaController.store);
-routes.put("/especialista/:registro", EspecialistaController.update);
-routes.delete("/especialista/:registro", EspecialistaController.destroy);
+routes.get("/especialista/:registro", Controller.Especialista.show);
+routes.get("/especialista", Controller.Especialista.index);
+routes.post("/especialista", Controller.Especialista.store);
+routes.put("/especialista/:registro", Controller.Especialista.update);
+routes.delete("/especialista/:registro", Controller.Especialista.destroy);
 
 // Endereço do Especialista - [ OK ]
-routes.post("/enderec/json", EnderecoEspecialistaController.store);
-routes.put("/enderec/json/:id", EnderecoEspecialistaController.update);
-routes.delete("/enderec/json/:id", EnderecoEspecialistaController.destroy);
+routes.post("/enderec/json", Controller.Especialista.store);
+routes.put("/enderec/json/:id", Controller.Especialista.update);
+routes.delete("/enderec/json/:id", Controller.Especialista.destroy);
 
 // Rotas do Atendimento
-routes.get("/atendimentos", AtendimentoController.index);
-routes.get(`/atendimento/`, AtendimentoController.show);
-routes.post("/atendimento", AtendimentoController.store);
-routes.get("/atendimento/:show", AtendimentoController.show);
-routes.put("/atendimento", AtendimentoController.update);
-routes.delete("/atendimento", AtendimentoController.destroy);
+routes.get("/atendimentos", Controller.Atendimento.index);
+routes.get(`/atendimento/`, Controller.Atendimento.show);
+routes.post("/atendimento", Controller.Atendimento.store);
+routes.get("/atendimento/:show", Controller.Atendimento.show);
+routes.put("/atendimento", Controller.Atendimento.update);
+routes.delete("/atendimento", Controller.Atendimento.destroy);
 
 // Rotas do Profissão - [ OK ]
-routes.get("/profissao/:nome", ProfissaoController.show);
-routes.get("/profissao", ProfissaoController.index);
-routes.post("/profissao", ProfissaoController.store);
-routes.put("/profissao/:id", ProfissaoController.update);
-routes.delete("/profissao/:id", ProfissaoController.destroy);
+routes.get("/profissao/:nome", Controller.Profissao.show);
+routes.get("/profissao", Controller.Profissao.index);
+routes.post("/profissao", Controller.Profissao.store);
+routes.put("/profissao/:id", Controller.Profissao.update);
+routes.delete("/profissao/:id", Controller.Profissao.destroy);
 
 export default routes;

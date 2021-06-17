@@ -19,10 +19,8 @@ class ProntuarioHistorico extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Prontuario, { foreignKey: "prontuario_id" });
-  }
-  static associate(models) {
-    this.belongsTo(models.Especialistas, { foreignKey: "especialista_id" });
+    this.belongsTo(models.Prontuario, { foreignKey: "prontuario_id" }),
+      this.belongsTo(models.Especialistas, { foreignKey: "especialista_id" });
   }
 }
 

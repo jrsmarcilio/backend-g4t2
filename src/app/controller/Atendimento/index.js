@@ -1,6 +1,6 @@
 require("dotenv/config");
 
-import Atendimento from "../models/Atendimento";
+import Atendimento from "../../models/Atendimento";
 
 class AtendimentoController {
   async index(req, res) {
@@ -20,7 +20,7 @@ class AtendimentoController {
 
     if (idcliente) {
       const atendimentos = await Atendimento.findAll({
-        where: { cliente_id: idcliente },
+        where: { paciente_id: idcliente },
         attributes: { exclude: ["created_at", "updated_at"] },
       });
       if (atendimentos.length === 0) {
@@ -33,7 +33,7 @@ class AtendimentoController {
 
     if (idatendimento) {
       const atendimento = await Atendimento.findAll({
-        where: { cliente_id: idatendimento },
+        where: { paciente_id: idatendimento },
         attributes: { exclude: ["created_at", "updated_at"] },
       });
       if (atendimento.length === 0) {

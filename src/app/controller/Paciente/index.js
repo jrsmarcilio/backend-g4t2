@@ -1,9 +1,9 @@
-import Cliente from "../models/Cliente";
-import Endereco from "../models/Endereco";
+import Cliente from "../../models/Paciente";
+import Endereco from "../../models/Endereco";
 
-import FormaterString from "../../utils/FormaterString";
+import FormaterString from "../../../utils/FormaterString";
 
-class ClienteController {
+class PacienteController {
   async show(req, res) {
     const cliente = await Cliente.findAll({
       where: { cpf: req.params.cpf },
@@ -130,4 +130,4 @@ class ClienteController {
   }
 }
 
-export default new ClienteController();
+export default new PacienteController();

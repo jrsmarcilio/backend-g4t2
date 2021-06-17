@@ -1,6 +1,8 @@
 import express from "express";
 import routes from "./routes";
+import swaggerUi from "swagger-ui-express";
 
+import swaggerDocument from "./swagger.json";
 import "./database";
 
 class App {
@@ -8,6 +10,7 @@ class App {
     this.server = express();
     this.middleware();
     this.routes();
+    this.server.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   }
 
   middleware() {

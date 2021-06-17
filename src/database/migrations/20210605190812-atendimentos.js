@@ -26,10 +26,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      cliente_id: {
+      paciente_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: "clientes",
+          model: "pacientes",
           key: "id",
           onUpdate: "CASCADE",
           onDelete: "SET NULL",

@@ -30,6 +30,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      senha_hash: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       profissao_id: {
         type: Sequelize.INTEGER,
         references: {

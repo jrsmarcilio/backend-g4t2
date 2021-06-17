@@ -4,7 +4,7 @@ class Prontuario extends Model {
   static init(sequelize) {
     super.init(
       {
-        cliente_id: Sequelize.INTEGER,
+        paciente_id: Sequelize.INTEGER,
         data_abertura: Sequelize.DATE,
       },
       {
@@ -16,7 +16,8 @@ class Prontuario extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Cliente, { foreignKey: "cliente_id" });
+    this.belongsTo(models.Cliente, { foreignKey: "paciente_id" }),
+      this.belongsToMany(models.ProntuarioHistorico, { foreignKey: "id" });
   }
 }
 
