@@ -8,6 +8,7 @@ class Prontuario extends Model {
         data_abertura: Sequelize.DATE,
       },
       {
+        tableName: "prontuarios",
         sequelize,
       }
     );
@@ -17,7 +18,10 @@ class Prontuario extends Model {
 
   static associate(models) {
     this.belongsTo(models.Paciente, { foreignKey: "paciente_id" }),
-      this.belongsToMany(models.ProntuarioHistorico, { foreignKey: "id", through: "ProntsHistorico" });
+      this.belongsToMany(models.ProntuarioHistorico, {
+        foreignKey: "id",
+        through: "ProntsHistorico",
+      });
   }
 }
 

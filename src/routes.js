@@ -5,60 +5,42 @@ import authMiddleware from "./app/middlewares/auth";
 
 const routes = new Router();
 
-// Rotas do Usuário - [ OK ]
-routes.get("/recep", authMiddleware, Controller.Recepcionista.index);
-routes.get("/recep/:id", authMiddleware, Controller.Recepcionista.show);
-routes.post("/recep", Controller.Recepcionista.store);
-routes.put("/recep/:id", authMiddleware, Controller.Recepcionista.update);
-routes.delete("/recep/:id", authMiddleware, Controller.Recepcionista.destroy);
-
-// Create Session
-routes.post("/session", Controller.Session.store);
-
+// Swagger
 routes.get("/", (req, res, next) => {
   next();
 });
 
-// Rotas do Paciente - [ OK ]
-routes.post("/paciente", authMiddleware, Controller.Paciente.store);
-routes.get("/paciente", authMiddleware, Controller.Paciente.index);
-routes.get("/paciente/:id", authMiddleware, Controller.Paciente.show);
-routes.put("/paciente/:id", authMiddleware, Controller.Paciente.update);
-routes.delete("/paciente/:id", authMiddleware, Controller.Paciente.destroy);
+// Sessão
+routes.post("/session", Controller.Session.store);
 
-// Endereço do Paciente - [ OK ]
-routes.post("/endereco/json", Controller.Endereco.store);
-routes.post("/endereco/json/:id", Controller.Endereco.store);
-routes.get("/endereco/json", Controller.Endereco.index);
-routes.get("/endereco/json/:cep", Controller.Endereco.show);
-routes.put("/endereco/json/:id", Controller.Endereco.update);
-routes.delete("/endereco/json/:id", Controller.Endereco.destroy);
+// Especialista
+routes.get("/esp", authMiddleware, Controller.Especialista.show);
+routes.post("/esp", Controller.Especialista.store);
+routes.put("/esp", authMiddleware, Controller.Especialista.update);
+routes.delete("/esp", authMiddleware, Controller.Especialista.destroy);
+routes.post("/esp/endereco", authMiddleware, Controller.Especialista.address);
 
-// Rotas do Especialista - [ OK ]
-routes.get("/especialista/:registro", Controller.Especialista.show);
-routes.get("/especialista", Controller.Especialista.index);
-routes.post("/especialista", Controller.Especialista.store);
-routes.put("/especialista/:registro", Controller.Especialista.update);
-routes.delete("/especialista/:registro", Controller.Especialista.destroy);
+// Recepcionista
+routes.get("/recep", authMiddleware, Controller.Recepcionista.index);
+routes.get("/recep/:id", authMiddleware, Controller.Recepcionista.show);
+routes.post("/recep", authMiddleware, Controller.Recepcionista.store);
+routes.put("/recep", authMiddleware, Controller.Recepcionista.update);
+routes.delete("/recep/:id", authMiddleware, Controller.Recepcionista.destroy);
 
-// Endereço do Especialista - [ OK ]
-routes.post("/enderec/json", Controller.Especialista.store);
-routes.put("/enderec/json/:id", Controller.Especialista.update);
-routes.delete("/enderec/json/:id", Controller.Especialista.destroy);
+// Paciente
+routes.get("/pac", authMiddleware, Controller.Paciente.index);
+routes.get("/pac/:id", authMiddleware, Controller.Paciente.show);
+routes.post("/pac", authMiddleware, Controller.Paciente.store);
+routes.put("/pac/:id", authMiddleware, Controller.Paciente.update);
+routes.delete("/pac/:id", authMiddleware, Controller.Paciente.destroy);
+routes.post("/pac/endereco/:id", authMiddleware, Controller.Paciente.address);
 
-// Rotas do Atendimento
-routes.get("/atendimentos", Controller.Atendimento.index);
-routes.get(`/atendimento/`, Controller.Atendimento.show);
-routes.post("/atendimento", Controller.Atendimento.store);
-routes.get("/atendimento/:show", Controller.Atendimento.show);
-routes.put("/atendimento", Controller.Atendimento.update);
-routes.delete("/atendimento", Controller.Atendimento.destroy);
-
-// Rotas do Profissão - [ OK ]
-routes.get("/profissao/:nome", Controller.Profissao.show);
-routes.get("/profissao", Controller.Profissao.index);
-routes.post("/profissao", Controller.Profissao.store);
-routes.put("/profissao/:id", Controller.Profissao.update);
-routes.delete("/profissao/:id", Controller.Profissao.destroy);
+// // // Rotas do Atendimento
+// // routes.get("/atendimentos", Controller.Atendimento.index);
+// // routes.get(`/atendimento/`, Controller.Atendimento.show);
+// // routes.post("/atendimento", Controller.Atendimento.store);
+// // routes.get("/atendimento/:show", Controller.Atendimento.show);
+// // routes.put("/atendimento", Controller.Atendimento.update);
+// // routes.delete("/atendimento", Controller.Atendimento.destroy);
 
 export default routes;

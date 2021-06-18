@@ -1,135 +1,94 @@
-import Especialista from "../../models/Especialistas";
 import Endereco from "../../models/Endereco";
+import Especialista from "../../models/Especialista";
 
 import FormaterString from "../../../utils/FormaterString";
 
 class EspecialistaController {
   async show(req, res) {
-    const especialista = await Especialista.findAll({
-      where: { registro: req.body.registro },
-      attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
-      include: [
-        {
-          model: Endereco,
-          attributes: { exclude: ["createdAt", "updatedAt"] },
-          // required: true,
+    try {
+      const especialista = await Especialista.findOne({
+        where: { id: req.userId },
+        attributes: {
+          exclude: ["senha_hash", "endereco_id"],
         },
-      ],
-    });
+        include: [
+          {
+            model: Endereco,
+          },
+        ],
+      });
 
-    if (especialista.length === 0) {
-      return res.status(401).json({ error: "Nenhum registro encontrado." });
+      return res.status(200).json(especialista);
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error.message });
     }
-
-    return res.status(200).json(especialista);
-  }
-
-  async index(req, res) {
-    const especialista = await Especialista.findAll({
-      attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
-      include: [
-        {
-          model: Endereco,
-          attributes: { exclude: ["createdAt", "updatedAt"] },
-          // required: true,
-        },
-      ],
-    });
-
-    if (especialista.length === 0) {
-      return res.status(401).json({ error: "Nenhum registro encontrado." });
-    }
-
-    return res.status(200).json(especialista);
   }
 
   async store(req, res) {
-    const { registro, nome, telefone, celular, email, tipo_sanguineo } =
-      req.body;
+    try {
+      const registro = FormaterString(req.body.registro);
 
-    if (
-      registro == null ||
-      nome == null ||
-      telefone == null ||
-      celular == null ||
-      email == null
-    ) {
-      return res.status(400).json({
-        error: "Algum campo não foi preenchido.",
+      const especialista = await Especialista.findOne({
+        where: { registro: registro },
       });
+
+      if (especialista) {
+        return res
+          .status(401)
+          .json({ error: `Registro: ${registro} já está cadastrado.` });
+      }
+
+      await Especialista.create(req.body);
+
+      return res.status(200).json({ message: `Cadastro realizado.` });
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error.message });
     }
-
-    const registroFormated = FormaterString(registro);
-
-    const checkRegistro = await Especialista.findOne({
-      where: { registro: registroFormated },
-    });
-    if (checkRegistro) {
-      return res
-        .status(401)
-        .json({ error: `${registro} não está disponivel.` });
-    }
-
-    await Especialista.create({
-      registro: registroFormated,
-      nome,
-      telefone,
-      celular,
-      email,
-      tipo_sanguineo,
-    });
-
-    return res.status(200).json({
-      message: `O Especialista foi cadastrado com sucesso.`,
-    });
   }
 
   async update(req, res) {
-    const registro = await FormaterString(req.params.registro);
-
-    const especialista = await Especialista.findOne({
-      where: { registro: registro },
-    });
-
-    if (!especialista) {
-      return res.status(401).json({ error: `Os dados não foram encontrados.` });
+    try {
+      await Especialista.update(req.body, { where: { id: req.userId } });
+      return res
+        .status(200)
+        .json({ message: `Dados atualizados com sucesso.` });
+    } catch (error) {
+      console.log(error);
+      return res.status(200).json({ error: error });
     }
-
-    await especialista.update({
-      registro: registro,
-      nome: req.body.nome,
-      telefone: req.body.telefone,
-      celular: req.body.celular,
-      email: req.body.email,
-      profissao_id: req.body.profissao_id,
-      endereco_id: req.body.endereco_id,
-    });
-
-    return res
-      .status(200)
-      .json({ message: `Os dados foram atualizado com sucesso.` });
   }
 
   async destroy(req, res) {
-    const registro = FormaterString(req.params.registro);
-
-    const especialista = await Especialista.findOne({
-      where: { registro: registro },
-    });
-
-    if (!especialista) {
-      return res.status(401).json({ error: `Os dados não foram encontrados.` });
+    try {
+      await Especialista.destroy({ where: { id: req.userId } });
+      return res.status(200).json({ message: `Os dados foram deletados.` });
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error.message });
     }
+  }
 
-    await especialista.destroy({
-      where: {
-        registro: registro,
-      },
-    });
+  async address(req, res) {
+    try {
+      const especial = await Especialista.findByPk(req.userId);
 
-    return res
-      .status(200)
-      .json({ message: `Os dados foram deletados com sucesso.` });
+      if (especial.endereco_id) {
+        const endereco = await Endereco.update(req.body, {
+          where: { id: especial.endereco_id },
+        });
+        await especial.update({ endereco_id: endereco.id });
+        return res.status(200).json({ message: "Endereço atualizado." });
+      }
+
+      const endereco = await Endereco.create(req.body);
+      await especial.update({ endereco_id: endereco.id });
+      return res.status(200).json({ message: "Endereço cadastrado." });
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error.message });
+    }
   }
 }
 

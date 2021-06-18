@@ -22,6 +22,7 @@ class Paciente extends Model {
         ),
       },
       {
+        tableName: "pacientes",
         sequelize,
       }
     );

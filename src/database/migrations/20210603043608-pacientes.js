@@ -2,14 +2,14 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("especialistas", {
+    return queryInterface.createTable("pacientes", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      registro: {
+      cpf: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
@@ -30,19 +30,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      senha_hash: {
-        type: Sequelize.STRING,
+      tipo_sanguineo: {
+        type: Sequelize.ENUM,
+        values: ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],
         allowNull: false,
-      },
-      profissao_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "profissaos",
-          key: "id",
-          onUpdate: "CASCADE",
-          onDelete: "SET NULL",
-          allowNull: true,
-        },
       },
       endereco_id: {
         type: Sequelize.INTEGER,
@@ -51,7 +42,17 @@ module.exports = {
           key: "id",
           onUpdate: "CASCADE",
           onDelete: "SET NULL",
-          allowNull: true,
+          allowNull: false,
+        },
+      },
+      especialista_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "especialistas",
+          key: "id",
+          onUpdate: "CASCADE",
+          onDelete: "SET NULL",
+          allowNull: false,
         },
       },
       created_at: {
@@ -66,6 +67,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable("especialistas");
+    return queryInterface.dropTable("pacientes");
   },
 };

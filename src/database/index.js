@@ -5,8 +5,7 @@ import Sequelize from "sequelize";
 import Atendimento from "../app/models/Atendimento";
 import Paciente from "../app/models/Paciente";
 import Endereco from "../app/models/Endereco";
-import Especialista from "../app/models/Especialistas";
-import Profissao from "../app/models/Profissao";
+import Especialista from "../app/models/Especialista";
 import Prontuario from "../app/models/Prontuario";
 import ProntuarioHistorico from "../app/models/ProntuarioHistorico";
 import Recepcionista from "../app/models/Recepcionista";
@@ -18,7 +17,6 @@ const models = [
   Paciente,
   Endereco,
   Especialista,
-  Profissao,
   Prontuario,
   ProntuarioHistorico,
   Recepcionista,

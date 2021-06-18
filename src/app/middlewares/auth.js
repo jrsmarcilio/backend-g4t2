@@ -7,7 +7,7 @@ export default async (req, res, next) => {
 
   if (!AuthAuthorization) {
     return res.status(401).json({
-      error: `Usuário não autorizado.`,
+      error: `Usuário não autenticado.`,
     });
   }
 
@@ -17,6 +17,7 @@ export default async (req, res, next) => {
     const decoded = await promisify(jwt.verify)(token, authConfig.secret);
     req.userId = decoded.id;
     req.userName = decoded.nome;
+    req.especialistaId = decoded.especialista_id;
     next();
   } catch (error) {
     return res.status(401).json({

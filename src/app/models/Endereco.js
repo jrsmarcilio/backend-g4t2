@@ -12,6 +12,7 @@ class Endereco extends Model {
         estado: Sequelize.STRING,
       },
       {
+        tableName: "enderecos",
         sequelize,
       }
     );

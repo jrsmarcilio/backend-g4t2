@@ -11,6 +11,7 @@ class ProntuarioHistorico extends Model {
         descricao: Sequelize.STRING,
       },
       {
+        tableName: "prontuario_historico",
         sequelize,
       }
     );
@@ -20,7 +21,7 @@ class ProntuarioHistorico extends Model {
 
   static associate(models) {
     this.belongsTo(models.Prontuario, { foreignKey: "prontuario_id" }),
-      this.belongsTo(models.Especialistas, { foreignKey: "especialista_id" });
+      this.belongsTo(models.Especialista, { foreignKey: "especialista_id" });
   }
 }
 

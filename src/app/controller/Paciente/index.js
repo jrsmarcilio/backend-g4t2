@@ -5,128 +5,132 @@ import FormaterString from "../../../utils/FormaterString";
 
 class PacienteController {
   async show(req, res) {
-    const paciente = await Paciente.findAll({
-      where: { cpf: req.params.cpf },
-      attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
-      include: [
-        {
-          model: Endereco,
-          attributes: { exclude: ["createdAt", "updatedAt"] },
-          // required: true,
-        },
-      ],
-    });
+    try {
+      const paciente = await Paciente.findAll({
+        where: { id: req.params.id },
+        include: [
+          {
+            model: Endereco,
+          },
+        ],
+      });
 
-    if (paciente.length === 0) {
-      return res.status(400).json({ error: `Nenhum paciente foi encontrado` });
+      return res.status(200).json(paciente);
+    } catch (error) {
+      console.log(error);
+      return res.status(200).json({ error: error.message });
     }
-
-    return res.status(200).json(paciente);
   }
 
   async index(req, res) {
-    const pacientes = await Paciente.findAll({
-      attributes: { exclude: ["endereco_id", "createdAt", "updatedAt"] },
-      include: [
-        {
-          model: Endereco,
-          attributes: { exclude: ["createdAt", "updatedAt"] },
-          // required: true,
-        },
-      ],
-    });
+    try {
+      const pacientes = await Paciente.findAll({
+        where: { especialista_id: req.userId || req.especialistaId },
+        include: [
+          {
+            model: Endereco,
+          },
+        ],
+      });
 
-    if (pacientes.length === 0) {
-      return res.status(401).json({ error: "Nenhum paciente foi encontrado." });
+      if (pacientes.length === 0)
+        return res.status(401).json({ error: "Nenhum registro" });
+
+      return res.status(200).json(pacientes);
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error.message });
     }
-
-    return res.status(200).json(pacientes);
   }
 
   async store(req, res) {
-    const { cpf, nome, telefone, celular, email, tipo_sanguineo } = req.body;
-
-    if (
-      cpf == null ||
-      nome == null ||
-      telefone == null ||
-      celular == null ||
-      email == null ||
-      tipo_sanguineo == null
-    ) {
-      return res.status(400).json({
-        error: "Algum registro não foi preenchido.",
+    try {
+      const cpf = FormaterString(req.body.cpf);
+      const cpfExists = await Paciente.findOne({ where: { cpf: cpf } });
+      if (cpfExists)
+        return res
+          .status(200)
+          .json({ error: `CPF: ${cpf} não está disponível.` });
+      await Paciente.create({
+        cpf,
+        nome: req.body.nome,
+        telefone: req.body.telefone,
+        celular: req.body.celular,
+        email: req.body.email,
+        tipo_sanguineo: req.body.tipo_sanguineo,
+        especialista_id: req.userId || req.especialistaId,
+      });
+      return res.status(200).json({
+        message: `Paciente cadastrado com sucesso.`,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({
+        error: error.message,
       });
     }
-
-    const cpfFormated = FormaterString(cpf);
-
-    const checkCPF = await Paciente.findOne({
-      where: { cpf: cpfFormated },
-    });
-    if (checkCPF) {
-      return res.status(401).json({ error: `${cpf} já está cadastrado.` });
-    }
-
-    await Paciente.create({
-      cpf: cpfFormated,
-      nome,
-      telefone,
-      celular,
-      email,
-      tipo_sanguineo,
-    });
-
-    return res.status(200).json({
-      message: `O usuário foi cadastrado com sucesso.`,
-    });
   }
 
   async update(req, res) {
-    const cpf = await FormaterString(req.params.cpf);
+    try {
+      const paciente = await Paciente.findOne({
+        where: {
+          id: req.params.id,
+          especialista_id: req.userId || req.especialistaId,
+        },
+      });
 
-    const paciente = await Paciente.findOne({
-      where: { cpf: cpf },
-    });
+      await paciente.update(req.body);
 
-    if (!paciente) {
-      return res.status(401).json({ error: `Os dados não foram encontrados.` });
+      return res.status(200).json({ message: `Dados atualizados.` });
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error });
     }
-    await paciente.update({
-      cpf: cpf,
-      nome: req.body.nome,
-      telefone: req.body.telefone,
-      celular: req.body.celular,
-      email: req.body.email,
-      tipo_sanguineo: req.body.tipo_sanguineo,
-      endereco_id: req.body.endereco_id,
-    });
-
-    return res
-      .status(200)
-      .json({ message: `Os dados foram atualizado com sucesso.` });
   }
 
   async destroy(req, res) {
-    const cpf = await FormaterString(req.params.cpf);
+    try {
+      const paciente = await Paciente.findOne({
+        where: {
+          id: req.params.id,
+          especialista_id: req.userId || req.especialistaId,
+        },
+      });
 
-    const paciente = await Paciente.findOne({
-      where: { cpf: cpf },
-    });
+      await paciente.destroy();
 
-    if (!paciente) {
-      return res.status(401).json({ error: `Os dados não foram encontrados.` });
+      return res.status(200).json({ message: `Dados apagados.` });
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error });
     }
+  }
 
-    await paciente.destroy({
-      where: {
-        cpf: cpf,
-      },
-    });
+  async address(req, res) {
+    try {
+      const paciente = await Paciente.findOne({
+        where: {
+          id: req.params.id,
+          especialista_id: req.userId || req.especialistaId,
+        },
+      });
 
-    return res
-      .status(200)
-      .json({ message: `Os dados foram deletados com sucesso.` });
+      if (paciente.endereco_id) {
+        const endereco = await Endereco.update(req.body, {
+          where: { id: paciente.endereco_id },
+        });
+        await paciente.update({ endereco_id: endereco.id });
+        return res.status(200).json({ message: "Endereço atualizado." });
+      }
+
+      const endereco = await Endereco.create(req.body);
+      await paciente.update({ endereco_id: endereco.id });
+      return res.status(200).json({ message: "Endereço cadastrado." });
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error.message });
+    }
   }
 }
 

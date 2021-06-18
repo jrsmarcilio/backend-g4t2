@@ -13,6 +13,7 @@ class Atendimento extends Model {
         status: Sequelize.DataTypes.ENUM("AGENDADO", "REALIZADO", "CANCELADO"),
       },
       {
+        tableName: "atendimentos",
         sequelize,
       }
     );
@@ -22,7 +23,7 @@ class Atendimento extends Model {
 
   static associate(models) {
     this.belongsTo(models.Paciente, { foreignKey: "paciente_id" }),
-      this.belongsTo(models.Especialistas, { foreignKey: "especialista_id" });
+      this.belongsTo(models.Especialista, { foreignKey: "especialista_id" });
   }
 }
 

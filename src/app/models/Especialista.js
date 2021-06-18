@@ -1,20 +1,22 @@
 import Sequelize, { Model } from "sequelize";
+import bcrypt from "bcryptjs";
 
-class Especialistas extends Model {
+class Especialista extends Model {
   static init(sequelize) {
     super.init(
       {
         nome: Sequelize.STRING,
         registro: Sequelize.STRING,
+        profissao: Sequelize.STRING,
+        email: Sequelize.STRING,
         telefone: Sequelize.STRING,
         celular: Sequelize.STRING,
-        email: Sequelize.STRING,
         senha: Sequelize.VIRTUAL,
         senha_hash: Sequelize.STRING,
         endereco_id: Sequelize.INTEGER,
-        profissao_id: Sequelize.INTEGER,
       },
       {
+        tableName: "especialistas",
         sequelize,
       }
     );
@@ -33,8 +35,9 @@ class Especialistas extends Model {
 
   static associate(models) {
     this.belongsTo(models.Endereco, { foreignKey: "endereco_id" }),
-      this.belongsTo(models.Profissao, { foreignKey: "profissao_id" });
+      this.hasMany(models.Recepcionista, { foreignKey: "especialista_id" }),
+      this.hasMany(models.Paciente, { foreignKey: "especialista_id" });
   }
 }
 
-export default Especialistas;
+export default Especialista;

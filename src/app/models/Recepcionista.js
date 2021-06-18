@@ -9,8 +9,10 @@ class Recepcionista extends Model {
         senha: Sequelize.VIRTUAL,
         senha_hash: Sequelize.STRING,
         nome: Sequelize.STRING,
+        especialista_id: Sequelize.INTEGER,
       },
       {
+        tableName: "recepcionistas",
         sequelize,
       }
     );
@@ -26,6 +28,10 @@ class Recepcionista extends Model {
 
   checkSenha(senha) {
     return bcrypt.compare(senha, this.senha_hash);
+  }
+
+  static associate(models) {
+    this.belongsTo(models.Especialista, { foreignKey: "especialista_id" });
   }
 }
 
