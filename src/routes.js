@@ -11,44 +11,72 @@ routes.get("/", (req, res, next) => {
 });
 
 // Sessão
-routes.post("/session", Controller.Session.store);
+routes.post("/login", Controller.Session.store);
 
 // Especialista
-routes.get("/esp", authMiddleware, Controller.Especialista.show);
-routes.post("/esp", Controller.Especialista.store);
-routes.put("/esp", authMiddleware, Controller.Especialista.update);
-routes.delete("/esp", authMiddleware, Controller.Especialista.destroy);
-routes.post("/esp/endereco", authMiddleware, Controller.Especialista.address);
+routes.get("/specialist", authMiddleware, Controller.Especialista.show);
+routes.post("/specialist", Controller.Especialista.store);
+routes.put("/specialist", authMiddleware, Controller.Especialista.update);
+routes.delete("/specialist", authMiddleware, Controller.Especialista.destroy);
+routes.post(
+  "/specialist/address",
+  authMiddleware,
+  Controller.Especialista.address
+);
 
 // Recepcionista
-routes.get("/recep", authMiddleware, Controller.Recepcionista.index);
-routes.get("/recep/:id", authMiddleware, Controller.Recepcionista.show);
-routes.post("/recep", authMiddleware, Controller.Recepcionista.store);
-routes.put("/recep", authMiddleware, Controller.Recepcionista.update);
-routes.delete("/recep/:id", authMiddleware, Controller.Recepcionista.destroy);
+routes.get("/receptionist", authMiddleware, Controller.Recepcionista.index);
+routes.get("/receptionist/:id", authMiddleware, Controller.Recepcionista.show);
+routes.post("/receptionist", authMiddleware, Controller.Recepcionista.store);
+routes.put("/receptionist", authMiddleware, Controller.Recepcionista.update);
+routes.delete(
+  "/receptionist/:id",
+  authMiddleware,
+  Controller.Recepcionista.destroy
+);
 
 // Paciente
-routes.get("/pac", authMiddleware, Controller.Paciente.index);
-routes.get("/pac/:id", authMiddleware, Controller.Paciente.show);
-routes.post("/pac", authMiddleware, Controller.Paciente.store);
-routes.put("/pac/:id", authMiddleware, Controller.Paciente.update);
-routes.delete("/pac/:id", authMiddleware, Controller.Paciente.destroy);
-routes.post("/pac/endereco/:id", authMiddleware, Controller.Paciente.address);
+routes.get("/patient", authMiddleware, Controller.Paciente.index);
+routes.get("/patient/:id", authMiddleware, Controller.Paciente.show);
+routes.post("/patient", authMiddleware, Controller.Paciente.store);
+routes.put("/patient/:id", authMiddleware, Controller.Paciente.update);
+routes.delete("/patient/:id", authMiddleware, Controller.Paciente.destroy);
+routes.post(
+  "/patient/address/:id",
+  authMiddleware,
+  Controller.Paciente.address
+);
 
 // Prontuario
-routes.get("/pront/:id", authMiddleware, Controller.Prontuario.store);
-routes.delete("/pront/:id", authMiddleware, Controller.Prontuario.destroy);
+routes.get("/medRecord/:id", authMiddleware, Controller.Prontuario.store);
+routes.delete("/medRecord/:id", authMiddleware, Controller.Prontuario.destroy);
 
 // Atendimento
-routes.get("/atend", authMiddleware, Controller.Atendimento.index);
-routes.get(`/atend/:id`, authMiddleware, Controller.Atendimento.show);
-routes.post("/atend/:id", authMiddleware, Controller.Atendimento.store);
-routes.put("/atend/:id", authMiddleware, Controller.Atendimento.update);
-routes.delete("/atend/:id", authMiddleware, Controller.Atendimento.destroy);
+routes.get("/attendance", authMiddleware, Controller.Atendimento.index);
+routes.get("/attendance/:id", authMiddleware, Controller.Atendimento.show);
+routes.post("/attendance/:id", authMiddleware, Controller.Atendimento.store);
+routes.put("/attendance/:id", authMiddleware, Controller.Atendimento.update);
+routes.delete(
+  "/attendance/:id",
+  authMiddleware,
+  Controller.Atendimento.destroy
+);
 
 // Prontuario Histórico
-routes.get("/prhist/:id", authMiddleware, Controller.ProntuarioHistorico.index);
-routes.get(`/prhist/:id`, authMiddleware, Controller.ProntuarioHistorico.show);
-routes.post("/phist/:id", authMiddleware, Controller.ProntuarioHistorico.store);
+routes.get(
+  "/histRecord/:id",
+  authMiddleware,
+  Controller.ProntuarioHistorico.index
+);
+routes.get(
+  "/histRecord/:id",
+  authMiddleware,
+  Controller.ProntuarioHistorico.show
+);
+routes.post(
+  "/histRecord/:id",
+  authMiddleware,
+  Controller.ProntuarioHistorico.store
+);
 
 export default routes;

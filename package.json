@@ -1,7 +1,7 @@
 {
   "name": "crud_teste",
   "version": "1.0.0",
-  "description": "CRUD para aula de teste",
+  "description": "API AFYA LABS - G4T2",
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
