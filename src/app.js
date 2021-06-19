@@ -1,5 +1,6 @@
 import express from "express";
 import routes from "./routes";
+import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 
 import swaggerDocument from "./swagger.json";
@@ -14,6 +15,7 @@ class App {
   }
 
   middleware() {
+    this.server.use(cors()); // this.server.use(cors({ origin: 'https://myapp.com.br' }));
     this.server.use(express.json());
   }
 
