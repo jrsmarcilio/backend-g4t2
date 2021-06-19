@@ -7,6 +7,7 @@ if (process.env.NODE_ENV === "test") {
     username: process.env.TEST_DATABASE_USER,
     password: process.env.TEST_DATABASE_PASSWORD,
     database: process.env.TEST_DATABASE,
+    port: process.env.DATABASE_PORT,
     define: {
       timestamps: true,
       underscored: true,
@@ -20,6 +21,7 @@ if (process.env.NODE_ENV === "test") {
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE,
+    port: process.env.DATABASE_PORT,
     define: {
       timestamps: true,
       underscored: true,
