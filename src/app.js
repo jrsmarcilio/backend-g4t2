@@ -15,7 +15,8 @@ class App {
   }
 
   middleware() {
-    this.server.use(cors()); // this.server.use(cors({ origin: 'https://myapp.com.br' }));
+    this.server.use(cors({ origin: "*" }));
+    // this.server.use(cors({ origin: 'https://myapp.com.br' }));
     this.server.use(express.json());
   }
 
