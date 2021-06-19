@@ -22,15 +22,16 @@ if (process.env.NODE_ENV === "test") {
   module.exports = {
     dialect: "postgres",
     host: process.env.DATABASE_HOST,
+    port: process.env.DATABASE_PORT,
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE,
-    port: process.env.DATABASE_PORT,
     define: {
       timestamps: true,
       underscored: true,
       underscoredAll: true,
     },
+    sslmode: "required",
     dialectOptions: {
       ssl: {
         rejectUnauthorized: false,
