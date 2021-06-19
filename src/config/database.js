@@ -7,11 +7,15 @@ if (process.env.NODE_ENV === "test") {
     username: process.env.TEST_DATABASE_USER,
     password: process.env.TEST_DATABASE_PASSWORD,
     database: process.env.TEST_DATABASE,
-    port: process.env.DATABASE_PORT,
     define: {
       timestamps: true,
       underscored: true,
       underscoredAll: true,
+    },
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   };
 } else {
@@ -28,7 +32,9 @@ if (process.env.NODE_ENV === "test") {
       underscoredAll: true,
     },
     dialectOptions: {
-      ssl: false,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   };
 }
