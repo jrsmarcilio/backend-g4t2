@@ -25,5 +25,8 @@ if (process.env.NODE_ENV === "test") {
       underscored: true,
       underscoredAll: true,
     },
+    dialectOptions: {
+      ssl: true,
+    },
   };
 }
