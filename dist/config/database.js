@@ -32,7 +32,9 @@ if (process.env.NODE_ENV === "test") {
       underscoredAll: true,
     },
     dialectOptions: {
-      ssl: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   };
 }
