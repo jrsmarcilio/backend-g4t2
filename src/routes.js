@@ -6,12 +6,12 @@ import authMiddleware from "./app/middlewares/auth";
 const routes = new Router();
 
 // Cors
-routes.use((req, res, next) => {
+routes.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   next();
 });
