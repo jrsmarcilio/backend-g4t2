@@ -1,4 +1,4 @@
-import Usuario from "../../app/models/Usuario";
+import Paciente from "../../app/controller/Paciente";
 
 // import request from 'supertest'
 

@@ -1,7 +1,7 @@
 import Endereco from "../../models/Endereco";
 import Especialista from "../../models/Especialista";
 
-import FormaterString from "../../../utils/FormaterString";
+import RemoveMask from "../../../utils/RemoveMask";
 
 class EspecialistaController {
   async show(req, res) {
@@ -27,7 +27,7 @@ class EspecialistaController {
 
   async store(req, res) {
     try {
-      const registro = FormaterString(req.body.registro);
+      const registro = RemoveMask(req.body.registro);
 
       const especialista = await Especialista.findOne({
         where: { registro: registro },

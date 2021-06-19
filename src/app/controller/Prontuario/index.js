@@ -1,34 +1,63 @@
 import Prontuario from "../../models/Prontuario";
-import Exists from "../../middlewares/validations/Exists";
+import Paciente from "../../models/Paciente";
 
 class ProntuarioController {
   async store(req, res) {
-    Exists(Prontuario);
+    try {
+      const paciente = await Paciente.findOne({
+        where: {
+          id: req.params.id,
+          especialista_id: req.userId || req.especialistaId,
+        },
+      });
 
+      if (!paciente)
+        return res.status(401).json({ error: `Paciente não encontrado.` });
 
-    await Prontuario.create(req.body);
+      const prontuario = await Prontuario.create({
+        paciente_id: paciente.id,
+        data_abertura: new Date(),
+      });
 
-    return res.status(200).json({
-      message: `Prontuario cadastrado com sucesso.`,
-    });
+      return res.status(200).json({
+        message: `Prontuario cadastrado.`,
+        prontuario: prontuario,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error.message });
+    }
   }
 
   async destroy(req, res) {
-    const prontuario = await Prontuario.findOne({
-      where: {
-        paciente_id: req.params.id,
-      },
-    });
+    try {
+      const paciente = await Paciente.findOne({
+        where: {
+          id: req.params.id,
+          especialista_id: req.userId || req.especialistaId,
+        },
+      });
 
-    if (!prontuario) {
-      return res.status(401).json({ error: `Prontuario não encontrado.` });
+      if (!paciente)
+        return res.status(401).json({ error: `Paciente não encontrado.` });
+
+      const prontuario = await Prontuario.findOne({
+        where: {
+          paciente_id: paciente.id,
+        },
+      });
+
+      if (!prontuario) {
+        return res.status(401).json({ error: `Prontuario não encontrado.` });
+      }
+
+      await prontuario.destroy();
+
+      return res.status(200).json({ message: `Prontuario deletado.` });
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ error: error.message });
     }
-
-    await prontuario.destroy();
-
-    return res
-      .status(200)
-      .json({ message: `Prontuario deletado com sucesso.` });
   }
 }
 

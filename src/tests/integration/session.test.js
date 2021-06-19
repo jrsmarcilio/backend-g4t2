@@ -1,14 +1,19 @@
-describe("Authentication", () => {
-  it("should sum two numbers", () => {
-    const x = 1;
-    const y = 1;
+import request from "supertest";
+import app from "../../app";
+import "../../config/database";
 
-    const sum = x + y;
+describe("AuthMiddlewares", () => {
+  it("É possível acessar sem o token", async () => {
+    const response = await request(app).post("/pac").send({
+      cpf: "12345678904",
+      nome: "Marcílio",
+      telefone: "81995919313",
+      celular: "81995919313",
+      email: "jrsmarcilio@gmail.com",
+      tipo_sanguineo: "A+",
+    });
 
-    expect(sum).toBe(2);
+    expect(response.statusCode).toEqual(401);
+    expect(response.error);
   });
 });
-
-// describe("Authentication", () => {
-//   it("should receive JWT token when authenticated with valid credentials", () => {});
-// });

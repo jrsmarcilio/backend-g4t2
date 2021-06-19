@@ -35,12 +35,20 @@ routes.put("/pac/:id", authMiddleware, Controller.Paciente.update);
 routes.delete("/pac/:id", authMiddleware, Controller.Paciente.destroy);
 routes.post("/pac/endereco/:id", authMiddleware, Controller.Paciente.address);
 
-// // // Rotas do Atendimento
-// // routes.get("/atendimentos", Controller.Atendimento.index);
-// // routes.get(`/atendimento/`, Controller.Atendimento.show);
-// // routes.post("/atendimento", Controller.Atendimento.store);
-// // routes.get("/atendimento/:show", Controller.Atendimento.show);
-// // routes.put("/atendimento", Controller.Atendimento.update);
-// // routes.delete("/atendimento", Controller.Atendimento.destroy);
+// Prontuario
+routes.get("/pront/:id", authMiddleware, Controller.Prontuario.store);
+routes.delete("/pront/:id", authMiddleware, Controller.Prontuario.destroy);
+
+// Atendimento
+routes.get("/atend", authMiddleware, Controller.Atendimento.index);
+routes.get(`/atend/:id`, authMiddleware, Controller.Atendimento.show);
+routes.post("/atend/:id", authMiddleware, Controller.Atendimento.store);
+routes.put("/atend/:id", authMiddleware, Controller.Atendimento.update);
+routes.delete("/atend/:id", authMiddleware, Controller.Atendimento.destroy);
+
+// Prontuario Histórico
+routes.get("/prhist/:id", authMiddleware, Controller.ProntuarioHistorico.index);
+routes.get(`/prhist/:id`, authMiddleware, Controller.ProntuarioHistorico.show);
+routes.post("/phist/:id", authMiddleware, Controller.ProntuarioHistorico.store);
 
 export default routes;

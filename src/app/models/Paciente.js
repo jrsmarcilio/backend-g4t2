@@ -31,7 +31,8 @@ class Paciente extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Endereco, { foreignKey: "endereco_id" });
+    this.belongsTo(models.Endereco, { foreignKey: "endereco_id" }),
+      this.hasOne(models.Prontuario);
   }
 }
 

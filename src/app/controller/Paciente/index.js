@@ -1,16 +1,33 @@
 import Paciente from "../../models/Paciente";
 import Endereco from "../../models/Endereco";
+import Prontuario from "../../models/Prontuario";
 
-import FormaterString from "../../../utils/FormaterString";
+import RemoveMask from "../../../utils/RemoveMask";
 
 class PacienteController {
   async show(req, res) {
     try {
+      const attributes = {
+        exclude: [
+          "createdAt",
+          "updatedAt",
+          "endereco_id",
+          "PacienteId",
+          "paciente_id",
+        ],
+      };
+
       const paciente = await Paciente.findAll({
         where: { id: req.params.id },
+        attributes: attributes,
         include: [
           {
             model: Endereco,
+            attributes: attributes,
+          },
+          {
+            model: Prontuario,
+            attributes: attributes,
           },
         ],
       });
@@ -24,11 +41,27 @@ class PacienteController {
 
   async index(req, res) {
     try {
+      const attributes = {
+        exclude: [
+          "createdAt",
+          "updatedAt",
+          "endereco_id",
+          "PacienteId",
+          "paciente_id",
+        ],
+      };
+
       const pacientes = await Paciente.findAll({
         where: { especialista_id: req.userId || req.especialistaId },
+        attributes: attributes,
         include: [
           {
             model: Endereco,
+            attributes: attributes,
+          },
+          {
+            model: Prontuario,
+            attributes: attributes,
           },
         ],
       });
@@ -45,7 +78,7 @@ class PacienteController {
 
   async store(req, res) {
     try {
-      const cpf = FormaterString(req.body.cpf);
+      const cpf = RemoveMask(req.body.cpf);
       const cpfExists = await Paciente.findOne({ where: { cpf: cpf } });
       if (cpfExists)
         return res
