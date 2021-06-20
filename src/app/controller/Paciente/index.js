@@ -82,7 +82,7 @@ class PacienteController {
       const cpfExists = await Paciente.findOne({ where: { cpf: cpf } });
       if (cpfExists)
         return res
-          .status(200)
+          .status(401)
           .json({ error: `CPF: ${cpf} não está disponível.` });
       await Paciente.create({
         cpf,
