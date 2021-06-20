@@ -1,11 +1,9 @@
 # Documentação do Projeto
 
 #### Autores
-- [Marcílio Júnior](https://github.com/jrsmarcilio)
-- [Lutchenca Medeiros](https://github.com/lutchenca)
-- [Matheus Cardoso](https://github.com/?)
-- [Renan Tokashiki](https://github.com/renantoka)
-- [Rainerio Lopes](https://github.com/?)
+- [Marcílio Júnior](https://github.com/jrsmarcilio) 
+- [Lutchenca Medeiros](https://github.com/lutchenca) 
+- [Renan Tokashiki](https://github.com/renantoka) 
 
 ## Desafio Atendimento Médico \ Prontuário
 Criar um sistema para um consultório controlar o cadastro de seus clientes, atendimentos e prontuário dos pacientes.
