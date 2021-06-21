@@ -28,6 +28,7 @@ class SessionController {
 
         return res.status(200).json({
           message: `Usuário autenticado`,
+          userName: nome,
           token: _jsonwebtoken2.default.sign({ nome, especialista_id }, _authConfig2.default.secret, {
             expiresIn: _authConfig2.default.expiresIn,
           }),
