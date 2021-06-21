@@ -29,22 +29,28 @@ class EspecialistaController {
     try {
       const registro = RemoveMask(req.body.registro);
 
-      const especialista = await Especialista.findOne({
+      const checkEspecial = await Especialista.findOne({
         where: { registro: registro },
       });
 
-      if (especialista) {
+      if (checkEspecial) {
         return res
           .status(401)
           .json({ error: `Registro: ${registro} já está cadastrado.` });
       }
 
-      await Especialista.create(req.body);
+      const especialista = await Especialista.create(req.body);
 
-      return res.status(200).json({ message: `Cadastro realizado.` });
+      return res.status(200).json({
+        especialista: {
+          id: especialista.id,
+          nome: especialista.nome,
+        },
+        message: `Olá ${especialista.nome}, seu cadastro foi realizado.`,
+      });
     } catch (error) {
       console.log(error);
-      return res.status(401).json({ error: error.message });
+      return res.status(401).json({ error: "Erro ao realizar o cadastro" });
     }
   }
 
@@ -72,12 +78,11 @@ class EspecialistaController {
 
   async address(req, res) {
     try {
-      const especial = await Especialista.findByPk(req.userId);
+      console.log(req.params.id);
+      const especial = await Especialista.findByPk(req.params.id);
 
       if (especial.endereco_id) {
-        const endereco = await Endereco.update(req.body, {
-          where: { id: especial.endereco_id },
-        });
+        const endereco = await Endereco.update(req.body);
         await especial.update({ endereco_id: endereco.id });
         return res.status(200).json({ message: "Endereço atualizado." });
       }

@@ -19,7 +19,7 @@ routes.post("/specialist", Controller.Especialista.store);
 routes.put("/specialist", authMiddleware, Controller.Especialista.update);
 routes.delete("/specialist", authMiddleware, Controller.Especialista.destroy);
 routes.post(
-  "/specialist/address",
+  "/specialist/address/:id",
   authMiddleware,
   Controller.Especialista.address
 );

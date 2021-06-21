@@ -28,6 +28,7 @@ class SessionController {
 
         return res.status(200).json({
           message: `Usuário autenticado`,
+          userName: nome,
           token: jwt.sign({ nome, especialista_id }, authConfig.secret, {
             expiresIn: authConfig.expiresIn,
           }),
