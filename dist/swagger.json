@@ -5,7 +5,7 @@
     "version": "0.0.1",
     "title": "API G4T2",
     "contact": {
-      "email": "jrsmarcilio@gmail.com;lutchenca@hotmail.com"
+      "email": "jrsmarcilio@gmail.com;lutchenca@hotmail.com;renantokashiki@gmail.com"
     }
   },
   "host": "localhost:3333",
@@ -151,7 +151,7 @@
         }
       }
     },
-    "/clients": {
+    "/patient": {
       "get": {
         "tags": [
           "pacientes"
@@ -171,7 +171,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Clients"
+                "$ref": "#/definitions/patient"
               }
             }
           },
@@ -214,7 +214,7 @@
         }
       }
     },
-    "clients/{id}": {
+    "patient/{id}": {
       "put": {
         "tags": [
           "pacientes"
@@ -382,7 +382,7 @@
             "description": "successful operation"
           },
           "400": {
-            "description": "Algo deu errado ao tentar cadastrar p Especialista"
+            "description": "Algo deu errado ao tentar cadastrar o Especialista"
           }
         }
       },
@@ -616,7 +616,7 @@
     "Login": {
       "type": "object",
       "required": [
-        "email",
+        "registro",
         "senha"
       ],
       "properties": {
@@ -628,7 +628,7 @@
           "nome": {
             "type": "string"
           },
-          "email": {
+          "registro": {
             "type": "string"
           },
           "senha": {
@@ -646,11 +646,11 @@
     "LoginBody": {
       "type": "object",
       "required": [
-        "email",
+        "registro",
         "senha"
       ],
       "properties": {
-        "email": {
+        "registro": {
           "type": "string"
         },
         "senha": {
